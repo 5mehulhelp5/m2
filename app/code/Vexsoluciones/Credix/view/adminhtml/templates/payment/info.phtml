@@ -1,0 +1,75 @@
+<?php
+
+use Vexsoluciones\Credix\Model\Transaction;
+
+/** @var \Vexsoluciones\Credix\Block\Adminhtml\Payment\Info $this */
+/** @var Transaction $transaction */
+
+if (!$this->shouldDisplayPaymentSection()) {
+    return;
+}
+
+$transaction = $this->getTransaction();
+?>
+<?php
+echo $this->escapeHtml($this->getMethod()->getTitle()) ?>
+
+<?php
+if (null !== $transaction): ?>
+    <br>
+    <table class="admin__table-secondary order-information-table qr-payment payment-info">
+        <tbody>
+
+        <tr>
+            <th><?php
+                echo __('Authorization Number'); ?></th>
+            <td class="country"><?php
+                echo $transaction->getAuthorizationNumber() ?></td>
+        </tr>
+        <tr>
+            <th><?php
+                echo __('Message'); ?></th>
+            <td class="country"><?php
+                echo $transaction->getMessage() ?></td>
+        </tr>
+        <tr>
+            <th><?php
+                echo __('Reference Number'); ?></th>
+            <td class="country"><?php
+                echo $transaction->getVerificationNumReference() ?></td>
+        </tr>
+        <tr>
+            <th><?php
+                echo __('Verification Message'); ?></th>
+            <td class="country"><?php
+                echo $transaction->getVerificationMessage() ?></td>
+        </tr>
+        </tbody>
+    </table>
+<?php
+else: ?>
+    <!--<br>
+    <p>The payment details for this order could not be retrieved from Credix.</p>-->
+<?php
+endif; ?>
+
+<?php
+// This info comes from non-card based payment methods
+$_specificInfo = $this->getSpecificInformation();
+?>
+<?php
+if (count($_specificInfo) > 0): ?>
+    <table class="data-table admin__table-secondary">
+        <?php
+        foreach ($_specificInfo as $_label => $_value): ?>
+            <tr>
+                <th><?php
+                    echo __($this->escapeHtml($_label)) ?></th>
+                <td><?php
+                    echo nl2br(implode("\n", $this->getValueAsArray($_value, true))) ?></td>
+            </tr>
+        <?php
+        endforeach; ?>
+    </table>
+<?php
+endif; ?>

@@ -1,0 +1,63 @@
+.content_wrapper h3 strong {
+  color: #666666;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+}
+.content_wrapper p {
+  color: #666666;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.cms-company-policies-html .content_wrapper p,
+.cms-return-policy-html .content_wrapper p {
+  margin-bottom: 10px;
+}
+.cms-return-policy-html .content_wrapper li {
+  color: #666666;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.cms-terms-html .content_wrapper p i {
+  color: #666666;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  font-weight: bold;
+  font-style: unset !important;
+}
+
+#whatsappchat a.bottom-right {
+  right: 0px;
+  bottom: 65px !important;
+}
+
+.product-image-photo {
+  height: 100% !important;
+  width: auto !important;
+}
+
+.why-choose-us .content-why ul.why-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.why-choose-us .content-why ul.why-list li {
+  position: relative;
+  padding-left: 1.5em;
+}
+
+.why-choose-us .content-why ul.why-list li:before {
+  content: "✓";
+  left: 0;
+  position: absolute;
+  width: 1em;
+  height: 1em;
+}
+
+@media (max-width: 767px) {
+  .media-body {
+    margin-left: 20px;
+  }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <city>
+            <general>
+                <enabled>1</enabled>
+                <citynotinlist>1</citynotinlist>
+                <citynotinlist_title>City not in list</citynotinlist_title>
+            </general>
+        </city>
+    </default>
+</config>

@@ -1,0 +1,34 @@
+<link id="alignet-modal-css" rel="stylesheet" type="text/css" href="<?php echo $this->getWsDomain(); ?>/VPOS2/css/modalcomercio.css" media="all">
+<script type="text/javascript" src="<?php echo $this->getWsDomain(); ?>/VPOS2/js/modalcomercio.js" ></script>
+
+<?php
+
+if ($this->getPaymeEsquema() == 1) {
+	echo '<form action="#" method="POST" name="f1" id="f1" class="alignet-form-vpos2">';
+}
+else
+{
+	echo '<form action="'.$this->getGatewayUrl().'" method="POST" name="f1" id="f1" class="alignet-form-vpos2">';
+}
+?>
+
+
+
+    <?php foreach ($this->getOrderCreateData() as $name => $value): ?>
+    <input type="hidden" name="<?php echo $name; ?>" value="<?php echo $value; ?>" />
+    <?php endforeach; ?>
+    <input type="button" id="btnmodal" style="display:none" onclick="<?php echo $this->getGatewayUrl(); ?>" value="Comprar">
+</form>
+<script language="JavaScript" type="text/javascript">
+<?php 
+if ($this->getPaymeEsquema()==1) {
+	echo 'document.getElementById("btnmodal").click();';
+
+}
+else
+{
+	echo "document.forms['f1'].submit();";
+}
+  
+ ?>
+</script>

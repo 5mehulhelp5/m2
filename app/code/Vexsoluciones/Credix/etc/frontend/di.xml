@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <virtualType name="Vexsoluciones\Credix\Model\ConfigProvider" type="Magento\Payment\Model\CcGenericConfigProvider">
+        <arguments>
+            <argument name="methodCodes" xsi:type="array">
+                <item name="credix" xsi:type="const">Vexsoluciones\Credix\Model\Payment\Credix::PAYMENT_CODE</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Vexsoluciones\Credix\Model\Config" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Vexsoluciones\Credix\Model\Payment\Credix::PAYMENT_CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Vexsoluciones\Credix\Model\AdditionalConfigProvider">
+        <arguments>
+            <argument name="config" xsi:type="object">Vexsoluciones\Credix\Model\Config</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="credix_config_provider" xsi:type="object">Vexsoluciones\Credix\Model\ConfigProvider</item>
+                <item name="credix_additional_provider" xsi:type="object">Vexsoluciones\Credix\Model\AdditionalConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Vexsoluciones\Credix\Model\LogData">
+        <arguments>
+            <argument name="config" xsi:type="object">Vexsoluciones\Credix\Model\Config</argument>
+        </arguments>
+    </type>
+    <type name="Vexsoluciones\Credix\Model\Payment">
+        <arguments>
+            <argument name="logRequest" xsi:type="object">Vexsoluciones\Credix\Model\LogData</argument>
+        </arguments>
+    </type>
+</config>

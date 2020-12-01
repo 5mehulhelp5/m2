@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<!-- /**
+ * CoderkubeSharecart
+ * Copyright(C) 06/2020 CoderkubeSharecart <support@coderkube.com>
+ * @package Coderkube_Sharecart
+ * @copyright Copyright(C) 06/2020 CoderkubeSharecart (https://coderkube.com/)
+ * @author CoderkubeSharecart <support@coderkube.com>
+ */ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route frontName="checkout" id="checkout">
+            <module name="Coderkube_Customredirect"/>
+        </route>
+    </router>
+</config>

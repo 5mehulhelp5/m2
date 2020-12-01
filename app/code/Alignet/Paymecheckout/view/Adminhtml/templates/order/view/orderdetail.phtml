@@ -1,0 +1,70 @@
+<!--  -->
+
+<section class="admin__page-section order-view-billing-shipping">
+    <div class="admin__page-section-title">
+        <span class="title">PAY-ME CHECKOUT</span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-payment-method">
+                        <div class="admin__page-section-item-title">
+                <span class="title">Request Pay-me</span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <pre style="background-color: #f1f1f1">
+                	<?php 
+
+                	$data = $block->getResponse();
+                		// print_r($data[1]);
+
+                      if ($data[1][0]) {
+                           foreach ($data[1][0] as $key => $value) {
+                            if ($key=="id_log") {
+                                echo "-<br>";
+                            }
+                            else
+                            {
+                                echo " ".$key." = ".$value."<br>";
+                            }
+                           }
+                        }
+                        else
+                        {
+                            print_r($data[1]);
+                        }
+
+                	 ?>
+                </pre>
+            </div>
+        </div>
+        
+<div class="admin__page-section-item ">
+    <div class="admin__page-section-item-title">
+        <span class="title">Response Pay-me</span>
+    </div>
+    <div class="admin__page-section-item-content">
+    	<pre style="background-color: #f1f1f1">
+    		<?php 
+
+                	$data = $block->getResponse();
+                		
+                        if (isset($data[0][0])) {
+                           foreach ($data[0][0] as $key => $value) {
+                            if ($key=="id_log") {
+                                echo "-<br>";
+                            }
+                            else{
+                                echo " ".$key." = ".$value."<br>";
+                            }
+                           }
+                        }
+                        else
+                        {
+                            echo str_replace("array", "",json_encode($data[0]));
+                        }
+
+                	 ?>
+                  </pre>                 
+     </div>
+</div>
+    </div>
+</section>

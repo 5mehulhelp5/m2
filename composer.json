@@ -11,9 +11,10 @@
         "sort-packages": true
     },
     "require": {
-		"magento/product-community-edition": "2.3.0",
         "hybridauth/hybridauth": "^2.14",
+        "innomuebles/core": "*",
         "mage2pro/core": "*",
+        "magento/product-community-edition": "2.3.0",
         "mageplaza/magento-2-spanish-language-pack": "dev-master"
     },
     "require-dev": {

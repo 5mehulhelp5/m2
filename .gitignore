@@ -12,8 +12,17 @@
 !/app/design/frontend/MageBig/**/*
 !/le_connector/**/*
 /update/
+# 2020-12-07 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+# "Reimplemewnt the commit `09b6e03` from Magento 2.3.1": https://github.com/innomuebles/m2/issues/4
+!/vendor/magento/framework/Communication/Config/Reader/XmlReader/Converter.php
+# 2020-12-07 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+# "Reimplemewnt the commit `09b6e03` from Magento 2.3.1": https://github.com/innomuebles/m2/issues/4
+!/vendor/magento/framework/Communication/Config/ReflectionGenerator.php
+# 2020-12-07 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+# "Reimplemewnt the commit `09b6e03` from Magento 2.3.1": https://github.com/innomuebles/m2/issues/4
+!/vendor/magento/framework/Communication/etc/communication.xsd
 # 2020-12-01 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
-# How to fix the «Invalid template file» / «require_js.phtml» failure of Magento 2.3.x in Windows?
+# "How to fix the «Invalid template file» / «require_js.phtml» failure of Magento 2.3.x in Windows?"
 # https://mage2.pro/t/5774
 !/vendor/magento/framework/View/Element/Template/File/Validator.php
 /dev

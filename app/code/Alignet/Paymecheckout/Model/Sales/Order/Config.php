@@ -34,11 +34,15 @@ class Config extends \Magento\Sales\Model\Order\Config
 
     /**
      * Gets PayuLatam-specific default status for state.
+	 * 2020-12-08 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+	 * "«Declaration of Alignet\Paymecheckout\Model\Sales\Order\Config::getStateDefaultStatus($state)
+	 * must be compatible with Magento\Sales\Model\Order\Config::getStateDefaultStatus($state): ?string»":
+	 * https://github.com/innomuebles/m2/issues/6
      *
      * @param string $state
      * @return string
      */
-    public function getStateDefaultStatus($state)
+    public function getStateDefaultStatus($state): ?string
     {
         switch ($state) {
             case Order::STATE_PENDING_PAYMENT:

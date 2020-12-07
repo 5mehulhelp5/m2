@@ -14,9 +14,6 @@
 /update/
 # 2020-12-07 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
 # "Reimplement the commit `09b6e03` from Magento 2.3.1": https://github.com/innomuebles/m2/issues/4
-!/vendor/magento/framework/Communication/Config/Reader/XmlReader/Converter.php
-# 2020-12-07 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
-# "Reimplement the commit `09b6e03` from Magento 2.3.1": https://github.com/innomuebles/m2/issues/4
 !/vendor/magento/framework/Communication/Config/ReflectionGenerator.php
 # 2020-12-07 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
 # "Reimplement the commit `09b6e03` from Magento 2.3.1": https://github.com/innomuebles/m2/issues/4

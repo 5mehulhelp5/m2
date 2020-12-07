@@ -24,10 +24,11 @@ if (!empty($images) && empty($mainImage)) {
     $mainImage = $block->getGalleryImages()->getFirstItem();
 }
 
-$helper = $block->getData('imageHelper');
+# 2020-12-08 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+# «Call to a member function getDefaultPlaceholderUrl() on null»: https://github.com/innomuebles/m2/issues/7
 $mainImageData = $mainImage ?
     $mainImage->getData('medium_image_url') :
-    $helper->getDefaultPlaceholderUrl('image');
+    df_catalog_image_h()->getDefaultPlaceholderUrl('image');
 
 ?>
 <div class="gallery-placeholder _block-content-loading gallery-<?= $id; ?> <?php if ($imgCount) echo 'imgs'; ?>">

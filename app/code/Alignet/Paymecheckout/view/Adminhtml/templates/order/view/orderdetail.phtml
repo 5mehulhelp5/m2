@@ -16,7 +16,11 @@
                 	$data = $block->getResponse();
                 		// print_r($data[1]);
 
-                      if ($data[1][0]) {
+					# 2020-12-08 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+					# «Undefined offset: 0
+					# in app/code/Alignet/Paymecheckout/view/Adminhtml/templates/order/view/orderdetail.phtml on line 19»:
+					# https://github.com/innomuebles/m2/issues/8
+                      if (isset($data[1][0])) {
                            foreach ($data[1][0] as $key => $value) {
                             if ($key=="id_log") {
                                 echo "-<br>";

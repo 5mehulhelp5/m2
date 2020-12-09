@@ -46,8 +46,7 @@ class Start extends \Magento\Framework\App\Action\Action {
 	/**
 	 * @return \Magento\Framework\Controller\Result\Redirect
 	 */
-	function execute()
-	{
+	function execute() {
 		/**
 		 * @var $clientOrderHelper \Alignet\Paymecheckout\Model\Client\OrderInterface
 		 * @var $resultRedirect \Magento\Framework\Controller\Result\Redirect
@@ -56,19 +55,14 @@ class Start extends \Magento\Framework\App\Action\Action {
 		$redirectUrl = 'checkout/cart';
 		$redirectParams = [];
 		$orderId = $this->orderHelper->getOrderIdForPaymentStart();
-
 		if ($orderId) {
 			$order = $this->orderHelper->loadOrderById($orderId);
-
 			if ($this->orderHelper->canStartFirstPayment($order)) {
 				try {
 					$client = $this->clientFactory->create();
-
 					$clientOrderHelper = $client->getOrderHelper();
 					$orderData = $clientOrderHelper->getDataForOrderCreate($order);
-
 					$result = $client->orderCreate($orderData);
-
 					$this->orderHelper->addNewOrderTransaction(
 						$order,
 						$result['orderId'],

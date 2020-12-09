@@ -2,14 +2,10 @@
 /**
  * @copyright Copyright (c)  2019 Alignet  (https://www.pay-me.com)
  */
-
 namespace Alignet\Paymecheckout\Model;
-
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
-
-class Client
-{
+final class Client {
 
     /**
      * @var Client\ConfigInterface
@@ -39,6 +35,8 @@ class Client
     }
 
     /**
+	 * 2020-12-09
+	 * @used-by \Alignet\Paymecheckout\Controller\Payment\Start::execute()
      * @param array $data
      * @return array (keys: orderId, redirectUri, extOrderId)
      * @throws LocalizedException

@@ -3,8 +3,10 @@ namespace Alignet\Paymecheckout\Controller\Classic;
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
+use Magento\Sales\Model\Order as O;
+# 2020-12-09
+/** @final Unable to use the PHP «final» keyword here because of the M2 code generation. */
 class Response extends \Magento\Framework\App\Action\Action implements CsrfAwareActionInterface {
- 
 	 /**
 	 * @var \Alignet\Paymecheckout\Model\Session
 	 */
@@ -163,8 +165,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$response['responseMSG'] = 'Transacción Autorizada';
 			$response['titleColor'] = 'success';
 
-			$order->setState(\Magento\Sales\Model\Order::STATE_PROCESSING, true)->save();
-			$order->setStatus(\Magento\Sales\Model\Order::STATE_PROCESSING, true)->save();
+			$order->setState(O::STATE_PROCESSING, true)->save();
+			$order->setStatus(O::STATE_PROCESSING, true)->save();
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 			$objectManager->create('Magento\Sales\Model\OrderNotifier')->notify($order);
@@ -175,8 +177,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$response['msgNumeroOP'] = 'Su transacción con número de pedido '.$response['purchaseOperationNumber'].' fue Denegada.  Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
 			$response['responseMSG'] = 'Transacción Denegada';
 			$response['titleColor'] = 'danger';
-			$order->setState(\Magento\Sales\Model\Order::STATUS_REJECTED, true)->save();
-			$order->setStatus(\Magento\Sales\Model\Order::STATUS_REJECTED, true)->save();
+			$order->setState(O::STATUS_REJECTED, true)->save();
+			$order->setStatus(O::STATUS_REJECTED, true)->save();
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$order->save();
 		}
@@ -186,8 +188,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$response['msgNumeroOP'] = 'Su transacción con número de pedido '.$response['purchaseOperationNumber'].' fue Cancelada. Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
 			$response['responseMSG'] = 'Transacción Cancelada';
 			$response['titleColor'] = 'danger';
-			$order->setState(\Magento\Sales\Model\Order::STATE_CANCELED, true)->save();
-			$order->setStatus(\Magento\Sales\Model\Order::STATE_CANCELED, true)->save();
+			$order->setState(O::STATE_CANCELED, true)->save();
+			$order->setStatus(O::STATE_CANCELED, true)->save();
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido Cancelado ');
 			$order->save();
 		}
@@ -206,8 +208,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$response['msgNumeroOP'] = 'Su transacción '.$response['purchaseOperationNumber'].' se encuentra pendiente de pago. Por favor acérquese a la agencia bancaria más cercana para realizar el pago con el siguiente código: <p class="pagoefectivo-cip">CIP: <b> '.$response['numeroCip'].'</b></p>';
 			$response['responseMSG'] = 'Transacción Pendiente';
 			$response['titleColor'] = 'success';
-			$order->setState(\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT, true)->save();
-			$order->setStatus(\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT, true)->save();
+			$order->setState(O::STATE_PENDING_PAYMENT, true)->save();
+			$order->setStatus(O::STATE_PENDING_PAYMENT, true)->save();
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$order->save();
 		}
@@ -216,8 +218,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$response['responseMSG'] = 'Incompleta';
 			$response['titleColor'] = 'danger';
 			$response['msgNumeroOP'] = 'Su transacción con número de pedido '.$response['purchaseOperationNumber'].' fue Incompleta. Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
-			$order->setState(\Magento\Sales\Model\Order::STATE_CANCELED, true)->save();
-			$order->setStatus(\Magento\Sales\Model\Order::STATE_CANCELED, true)->save();
+			$order->setState(O::STATE_CANCELED, true)->save();
+			$order->setStatus(O::STATE_CANCELED, true)->save();
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$order->save();
 		}

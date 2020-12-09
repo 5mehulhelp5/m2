@@ -3,7 +3,9 @@ namespace Alignet\Paymecheckout\Controller\Classic;
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
+use Magento\Payment\Model\MethodInterface as IM;
 use Magento\Sales\Model\Order as O;
+use Magento\Sales\Model\Order\Payment as OP;
 # 2020-12-09
 /** @final Unable to use the PHP «final» keyword here because of the M2 code generation. */
 class Response extends \Magento\Framework\App\Action\Action implements CsrfAwareActionInterface {
@@ -63,7 +65,7 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 		$res['brand'] =  trim(isset($res['brand'])) == "" ? "-" : $res['brand'];
 		$orderId = (int) substr($res['purchaseOperationNumber'],4,6);
 		if ($orderId) {
-		   $o = $this->orderRepository->get($orderId); /** @vaR $O o */
+		   $o = df_order($orderId); /** @var $O o */
 		}
 		else {
 		   echo  $res['answerMessage'];
@@ -159,18 +161,22 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			)";
 		$connection->query($sql);
 		if ($authorizationResult == '00') {
+			$op = dfp($o); /** @var OP $op */
+			dfp_action($op, IM::ACTION_AUTHORIZE_CAPTURE);
+			$o->save();
+			dfp_mail($o);
 			$res = [
 				'msgFecha' => "Este pedido fue generado el {$res['txDateTime']}, en breve recibirá un correo a {$res['shippingEmail']} con la confirmación del pago el cual debe imprimir y/o guardar"
 				,'msgNumeroOP' => 'Su transacción con número de pedido '.$res['purchaseOperationNumber'].' fue autorizada con éxito.'
 				,'responseMSG' => 'Transacción Autorizada'
 				,'titleColor' => 'success'
 			] + $res;
-			$o->setState(O::STATE_PROCESSING)->save();
+			/*$o->setState(O::STATE_PROCESSING)->save();
 			$o->setStatus(O::STATE_PROCESSING)->save();
 			$o->addStatusToHistory($o->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 			$objectManager->create('Magento\Sales\Model\OrderNotifier')->notify($o);
-			$o->save();
+			$o->save();*/
 		}
 		elseif ($authorizationResult == '01') {
 			$fechaHora = date("d/m/Y H:i:s");

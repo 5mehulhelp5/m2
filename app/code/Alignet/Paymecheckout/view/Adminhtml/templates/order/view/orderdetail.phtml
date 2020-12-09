@@ -8,37 +8,31 @@ $b = $block; /** @var B $b */
 	</div>
 	<div class="admin__page-section-content">
 		<div class="admin__page-section-item order-payment-method">
-						<div class="admin__page-section-item-title">
+			<div class="admin__page-section-item-title">
 				<span class="title">Request Pay-me</span>
 			</div>
 			<div class="admin__page-section-item-content">
 				<pre style="background-color: #f1f1f1">
 					<?php
-
 					$data = $b->getResponse();
-						// print_r($data[1]);
-
 					# 2020-12-08 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
 					# «Undefined offset: 0
 					# in app/code/Alignet/Paymecheckout/view/Adminhtml/templates/order/view/orderdetail.phtml on line 19»:
 					# https://github.com/innomuebles/m2/issues/8
-					  if (isset($data[1][0])) {
-						   foreach ($data[1][0] as $key => $value) {
-							if ($key=="id_log") {
+					if (!isset($data[1][0])) {
+						print_r($data[1]);
+					}
+					else {
+						foreach ($data[1][0] as $key => $value) {
+							if ($key == "id_log") {
 								echo "-<br>";
 							}
-							else
-							{
+							else {
 								echo " ".$key." = ".$value."<br>";
 							}
-						   }
 						}
-						else
-						{
-							print_r($data[1]);
-						}
-
-					 ?>
+					}
+					?>
 				</pre>
 			</div>
 		</div>

@@ -1,12 +1,7 @@
 <?php
-/**
- * @copyright Copyright (c)  2019 Alignet  (https://www.pay-me.com)
- */
-
 namespace Alignet\Paymecheckout\Model\Client\Classic;
-
-class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
-{
+# 2020-12-09
+class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface {
 	const STATUS_PRE_NEW            = 0;
 	const STATUS_NEW                = 1;
 	const STATUS_CANCELLED          = 2;
@@ -240,10 +235,12 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
 	}
 
 	/**
-	 * @inheritDoc
+	 * 2020-12-09
+	 * @override
+	 * @see \Alignet\Paymecheckout\Model\Client\OrderInterface::getDataForOrderCreate()
+	 * @used-by \Alignet\Paymecheckout\Controller\Payment\Start::execute()
 	 */
-	function getDataForOrderCreate(\Magento\Sales\Model\Order $order)
-	{
+	function getDataForOrderCreate(\Magento\Sales\Model\Order $order) {
 		return $this->dataGetter->getBasicData($order);
 	}
 

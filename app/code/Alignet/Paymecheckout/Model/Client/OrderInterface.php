@@ -1,14 +1,12 @@
 <?php
-/**
- * @copyright Copyright (c)  2019 Alignet  (https://www.pay-me.com)
- */
-
 namespace Alignet\Paymecheckout\Model\Client;
-
 use Magento\Framework\Exception\LocalizedException;
-
-interface OrderInterface
-{
+/**
+ * 2020-12-09
+ * @see \Alignet\Paymecheckout\Model\Client\Classic\Order
+ * @see \Alignet\Paymecheckout\Model\Client\Rest\Order
+ */
+interface OrderInterface {
 	/**
 	 * @param array $data
 	 * @return bool
@@ -75,6 +73,9 @@ interface OrderInterface
 	function consumeNotification(\Magento\Framework\App\Request\Http $request);
 
 	/**
+	 * 2020-12-09
+	 * @see \Alignet\Paymecheckout\Model\Client\Classic\Order::getDataForOrderCreate()
+	 * @see \Alignet\Paymecheckout\Model\Client\Rest\Order::getDataForOrderCreate
 	 * @param \Magento\Sales\Model\Order $order
 	 * @return array
 	 */

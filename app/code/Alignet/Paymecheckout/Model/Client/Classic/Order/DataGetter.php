@@ -87,9 +87,8 @@ final class DataGetter {
 	 * @param \Magento\Sales\Model\Order $order
 	 * @return array
 	 */
-	function getBasicData(\Magento\Sales\Model\Order $order)
-	{
-		$incrementId =(int)$order->getIncrementId();
+	function getBasicData(\Magento\Sales\Model\Order $order) {
+		$oid =(int)$order->getId(); /** @var int $oid */
 		$billingAddress = $order->getBillingAddress();
 		$billingAddresssArray =$billingAddress->getData();
 		$shippingAddress = $order->getShippingAddress();
@@ -142,7 +141,7 @@ final class DataGetter {
 		$data = [
 			'acquirerId' => $this->acquirerId,
 			'idCommerce' =>  $this->idCommerce,
-			'purchaseOperationNumber' =>  $incrementId,
+			'purchaseOperationNumber' => $oid,
 			'purchaseAmount' =>  $purchaseAmountVar,
 			'purchaseCurrencyCode' =>   $this->currency_iso,
 			'language' => 'ES',
@@ -178,7 +177,7 @@ final class DataGetter {
 			'reserved8' => '',
 			'reserved9' => '',
 			'reserved10' => '',
-			'purchaseVerification' => $this->purchaseVerification($incrementId, $purchaseAmountVar, $this->currency_iso),
+			'purchaseVerification' => $this->purchaseVerification($oid, $purchaseAmountVar, $this->currency_iso),
 
 		];
 

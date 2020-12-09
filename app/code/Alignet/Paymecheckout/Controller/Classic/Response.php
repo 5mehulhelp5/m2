@@ -178,8 +178,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$res['msgNumeroOP'] = 'Su transacción con número de pedido '.$res['purchaseOperationNumber'].' fue Denegada.  Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
 			$res['responseMSG'] = 'Transacción Denegada';
 			$res['titleColor'] = 'danger';
-			$o->setState(O::STATUS_REJECTED)->save();
-			$o->setStatus(O::STATUS_REJECTED)->save();
+			$o->setState(O::STATE_CANCELED)->save();
+			$o->setStatus(O::STATE_CANCELED)->save();
 			$o->addStatusToHistory($o->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$o->save();
 		}

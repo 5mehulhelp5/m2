@@ -159,9 +159,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			)";
 		$connection->query($sql);
 		if ($authorizationResult == '00') {
-			$fechaHora = $res['txDateTime'];
 			$res = [
-				'msgFecha' => 'Este pedido fue generado el ' .$fechaHora .', en breve recibirá un correo a '.$res['shippingEmail'].' con la confirmación del pago el cual debe imprimir y/o guardar '
+				'msgFecha' => "Este pedido fue generado el {$res['txDateTime']}, en breve recibirá un correo a {$res['shippingEmail']} con la confirmación del pago el cual debe imprimir y/o guardar"
 				,'msgNumeroOP' => 'Su transacción con número de pedido '.$res['purchaseOperationNumber'].' fue autorizada con éxito.'
 				,'responseMSG' => 'Transacción Autorizada'
 				,'titleColor' => 'success'

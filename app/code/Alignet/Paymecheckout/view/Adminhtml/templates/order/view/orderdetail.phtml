@@ -36,35 +36,30 @@ $b = $block; /** @var B $b */
 				</pre>
 			</div>
 		</div>
-
-<div class="admin__page-section-item ">
-	<div class="admin__page-section-item-title">
-		<span class="title">Response Pay-me</span>
-	</div>
-	<div class="admin__page-section-item-content">
-		<pre style="background-color: #f1f1f1">
-			<?php
-
-					$data = $b->getResponse();
-
-						if (isset($data[0][0])) {
-						   foreach ($data[0][0] as $key => $value) {
-							if ($key=="id_log") {
-								echo "-<br>";
-							}
-							else{
-								echo " ".$key." = ".$value."<br>";
-							}
-						   }
-						}
-						else
-						{
+		<div class="admin__page-section-item ">
+			<div class="admin__page-section-item-title">
+				<span class="title">Response Pay-me</span>
+			</div>
+			<div class="admin__page-section-item-content">
+				<pre style="background-color: #f1f1f1">
+					<?php
+						$data = $b->getResponse();
+						if (!isset($data[0][0])) {
 							echo str_replace("array", "",json_encode($data[0]));
 						}
-
-					 ?>
-				  </pre>
-	 </div>
-</div>
+						else {
+							foreach ($data[0][0] as $key => $value) {
+								if ($key=="id_log") {
+									echo "-<br>";
+								}
+								else {
+									echo " ".$key." = ".$value."<br>";
+								}
+							}
+						}
+					?>
+				</pre>
+			</div>
+		</div>
 	</div>
 </section>

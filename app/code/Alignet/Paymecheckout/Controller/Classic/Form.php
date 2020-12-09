@@ -1,12 +1,6 @@
 <?php
-/**
- * @copyright Copyright (c)  2019 Alignet  (https://www.pay-me.com)
- */
-
 namespace Alignet\Paymecheckout\Controller\Classic;
-
-class Form extends \Magento\Framework\App\Action\Action
-{
+class Form extends \Magento\Framework\App\Action\Action {
 	/**
 	 * @var \Alignet\Paymecheckout\Model\Session
 	 */

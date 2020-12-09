@@ -1,18 +1,9 @@
 <?php
-/**
- * @copyright Copyright (c)  2019 Alignet  (https://www.pay-me.com)
- */
-
-
-
-
 namespace Alignet\Paymecheckout\Controller\Classic;
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
-
-class Response extends \Magento\Framework\App\Action\Action implements CsrfAwareActionInterface
-{
+class Response extends \Magento\Framework\App\Action\Action implements CsrfAwareActionInterface {
  
 	 /**
 	 * @var \Alignet\Paymecheckout\Model\Session

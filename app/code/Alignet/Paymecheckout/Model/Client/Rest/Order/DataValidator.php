@@ -44,7 +44,7 @@ class DataValidator extends \Alignet\Paymecheckout\Model\Client\DataValidator
      * @param array $data
      * @return bool
      */
-    public function validateBasicData(array $data = [])
+    function validateBasicData(array $data = [])
     {
         foreach ($this->getRequiredBasicKeys() as $key) {
             if (!isset($data[$key]) || empty($data[$key])) {
@@ -58,7 +58,7 @@ class DataValidator extends \Alignet\Paymecheckout\Model\Client\DataValidator
      * @param array $data
      * @return bool
      */
-    public function validateProductsData(array $data = [])
+    function validateProductsData(array $data = [])
     {
         if (isset($data['products']) && !empty($data['products'])) {
             $requiredProductKeys = $this->getRequiredProductKeys();
@@ -80,7 +80,7 @@ class DataValidator extends \Alignet\Paymecheckout\Model\Client\DataValidator
      * @param array $data
      * @return bool
      */
-    public function validateStatusUpdateData($data)
+    function validateStatusUpdateData($data)
     {
         foreach ($this->getRequiredStatusUpdateKeys() as $key) {
             if (!isset($data[$key]) || empty($data[$key])) {

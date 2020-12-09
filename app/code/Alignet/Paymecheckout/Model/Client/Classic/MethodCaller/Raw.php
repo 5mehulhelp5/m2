@@ -17,7 +17,7 @@ class Raw implements RawInterface
     /**
      * @param SoapClient\Order $orderClient
      */
-    public function __construct(
+    function __construct(
         SoapClient\Order $orderClient
     ) {
         $this->orderClient = $orderClient;
@@ -26,7 +26,7 @@ class Raw implements RawInterface
     /**
      * @inheritdoc
      */
-    public function call($methodName, array $args = [])
+    function call($methodName, array $args = [])
     {
         return call_user_func_array([$this, $methodName], $args);
     }
@@ -39,7 +39,7 @@ class Raw implements RawInterface
      * @return \stdClass
      * @throws \Exception
      */
-    public function orderRetrieve($posId, $sessionId, $ts, $sig)
+    function orderRetrieve($posId, $sessionId, $ts, $sig)
     {
         return $this->orderClient->call('get', [
             'posId' => $posId,

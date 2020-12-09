@@ -11,7 +11,7 @@ class Classic extends \Alignet\Paymecheckout\Model\Client
      * @param Classic\Config $configHelper
      * @param Classic\Order $orderHelper
      */
-    public function __construct(
+    function __construct(
         Classic\Config $configHelper,
         Classic\Order $orderHelper
     ) {

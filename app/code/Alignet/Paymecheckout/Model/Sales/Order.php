@@ -7,7 +7,7 @@ namespace Alignet\Paymecheckout\Model\Sales;
 
 class Order extends \Magento\Sales\Model\Order
 {
-    public function __construct(
+    function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory,

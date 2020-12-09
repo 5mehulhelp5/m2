@@ -23,7 +23,7 @@ class Info extends \Magento\Payment\Block\Info
      * @param \Alignet\Paymecheckout\Model\ClientFactory $clientFactory
      * @param array $data
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Alignet\Paymecheckout\Model\ResourceModel\Transaction $transactionResource,
         \Alignet\Paymecheckout\Model\ClientFactory $clientFactory,

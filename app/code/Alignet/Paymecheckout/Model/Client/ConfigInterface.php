@@ -7,7 +7,7 @@ namespace Alignet\Paymecheckout\Model\Client;
 
 interface ConfigInterface
 {
-    public function setConfig();
+    function setConfig();
 
-    public function getConfig($key);
+    function getConfig($key);
 }

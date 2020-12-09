@@ -75,7 +75,7 @@ class Order implements OrderInterface
      * @param \Magento\Framework\Controller\Result\RawFactory $rawResultFactory
      * @param \Magento\Framework\App\RequestInterface $request
      */
-    public function __construct(
+    function __construct(
         Order\DataValidator $dataValidator,
         Order\DataGetter $dataGetter,
         MethodCaller $methodCaller,
@@ -96,7 +96,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function validateCreate(array $data = [])
+    function validateCreate(array $data = [])
     {
         return
             $this->dataValidator->validateEmpty($data) &&
@@ -107,7 +107,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function validateRetrieve($paymecheckoutOrderId)
+    function validateRetrieve($paymecheckoutOrderId)
     {
         return $this->dataValidator->validateEmpty($paymecheckoutOrderId);
     }
@@ -115,7 +115,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function validateCancel($paymecheckoutOrderId)
+    function validateCancel($paymecheckoutOrderId)
     {
         return $this->dataValidator->validateEmpty($paymecheckoutOrderId);
     }
@@ -123,7 +123,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function validateStatusUpdate(array $data = [])
+    function validateStatusUpdate(array $data = [])
     {
         return
             $this->dataValidator->validateEmpty($data) &&
@@ -134,7 +134,7 @@ class Order implements OrderInterface
      * @param array $data
      * @return array
      */
-    public function addSpecialDataToOrder(array $data = [])
+    function addSpecialDataToOrder(array $data = [])
     {
         return array_merge($data, [
             'continueUrl' => $this->dataGetter->getContinueUrl(),
@@ -147,7 +147,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function create(array $data)
+    function create(array $data)
     {
         /**
          * @var $result \OpenPayU_Result
@@ -166,7 +166,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function retrieve($paymecheckoutOrderId)
+    function retrieve($paymecheckoutOrderId)
     {
         $response = $this->methodCaller->call('orderRetrieve', [$paymecheckoutOrderId]);
         if ($response) {
@@ -181,7 +181,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function cancel($paymecheckoutOrderId)
+    function cancel($paymecheckoutOrderId)
     {
         return (bool) ($this->methodCaller->call('orderCancel', [$paymecheckoutOrderId]));
     }
@@ -189,7 +189,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function statusUpdate(array $data = [])
+    function statusUpdate(array $data = [])
     {
         return (bool) ($this->methodCaller->call('orderStatusUpdate', [$data]));
     }
@@ -197,7 +197,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function consumeNotification(\Magento\Framework\App\Request\Http $request)
+    function consumeNotification(\Magento\Framework\App\Request\Http $request)
     {
         if (!$request->isPost()) {
             throw new LocalizedException(new Phrase('POST request is required.'));
@@ -216,7 +216,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function getDataForOrderCreate(\Magento\Sales\Model\Order $order)
+    function getDataForOrderCreate(\Magento\Sales\Model\Order $order)
     {
         $data = ['products' => $this->dataGetter->getProductsData($order)];
         $shippingData = $this->dataGetter->getShippingData($order);
@@ -234,7 +234,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function getNewStatus()
+    function getNewStatus()
     {
         return self::STATUS_NEW;
     }
@@ -242,7 +242,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function paymentSuccessCheck()
+    function paymentSuccessCheck()
     {
         return is_null($this->request->getParam('error'));
     }
@@ -250,7 +250,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function canProcessNotification($paymecheckoutOrderId)
+    function canProcessNotification($paymecheckoutOrderId)
     {
         return !in_array(
             $this->transactionResource->getStatusByPayuplOrderId($paymecheckoutOrderId),
@@ -261,7 +261,7 @@ class Order implements OrderInterface
     /**
      * @inheritdoc
      */
-    public function processNotification($paymecheckoutOrderId, $status, $amount)
+    function processNotification($paymecheckoutOrderId, $status, $amount)
     {
         /**
          * @var $result \Magento\Framework\Controller\Result\Raw
@@ -276,7 +276,7 @@ class Order implements OrderInterface
     /**
      * @inheritDoc
      */
-    public function getStatusDescription($status)
+    function getStatusDescription($status)
     {
         if (isset($this->statusDescription[$status])) {
             return (string) __($this->statusDescription[$status]);

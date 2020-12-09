@@ -45,7 +45,7 @@ class Order
      * @param \Magento\Framework\App\RequestInterface $request
      * @param Order\Validator $orderValidator
      */
-    public function __construct(
+    function __construct(
         ResourceModel\Transaction $transactionResource,
         Sales\OrderFactory $orderFactory,
         \Magento\Checkout\Model\Session\SuccessValidator $checkoutSuccessValidator,
@@ -69,7 +69,7 @@ class Order
      * @param string $payuplExternalOrderId
      * @param string $status
      */
-    public function addNewOrderTransaction(
+    function addNewOrderTransaction(
         \Magento\Sales\Model\Order $order,
         $paymecheckoutOrderId,
         $payuplExternalOrderId,
@@ -94,7 +94,7 @@ class Order
      * @param int $orderId
      * @return Sales\Order|false
      */
-    public function loadOrderById($orderId)
+    function loadOrderById($orderId)
     {
         /**
          * @var $order Sales\Order
@@ -111,7 +111,7 @@ class Order
      * @param string $paymecheckoutOrderId
      * @return Sales\Order|false
      */
-    public function loadOrderByPayuplOrderId($paymecheckoutOrderId)
+    function loadOrderByPayuplOrderId($paymecheckoutOrderId)
     {
         $orderId = $this->transactionResource->getOrderIdByPayuplOrderId($paymecheckoutOrderId);
         if ($orderId) {
@@ -123,7 +123,7 @@ class Order
     /**
      * @param Sales\Order $order
      */
-    public function setNewOrderStatus(Sales\Order $order)
+    function setNewOrderStatus(Sales\Order $order)
     {
         $order
             ->setState(\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT)
@@ -135,7 +135,7 @@ class Order
      * @param Sales\Order $order
      * @param string $status
      */
-    public function setHoldedOrderStatus(Sales\Order $order, $status)
+    function setHoldedOrderStatus(Sales\Order $order, $status)
     {
         $orderState = Sales\Order::STATE_HOLDED;
         $orderStatus = $order->getConfig()->getStateDefaultStatus($orderState);
@@ -154,7 +154,7 @@ class Order
      * @param Sales\Order $order
      * @param float $amount
      */
-    public function completePayment(Sales\Order $order, $amount, $paymecheckoutOrderId)
+    function completePayment(Sales\Order $order, $amount, $paymecheckoutOrderId)
     {
         $payment = $order->getPayment();
         $payment
@@ -171,7 +171,7 @@ class Order
     /**
      * @return int|false
      */
-    public function getOrderIdForPaymentStart()
+    function getOrderIdForPaymentStart()
     {
         if ($this->checkoutSuccessValidator->isValid()) {
             return $this->checkoutSession->getLastOrderId();
@@ -194,7 +194,7 @@ class Order
      * @param \Magento\Sales\Model\Order $order
      * @return bool
      */
-    public function canStartFirstPayment(\Magento\Sales\Model\Order $order)
+    function canStartFirstPayment(\Magento\Sales\Model\Order $order)
     {
         return
             $this->orderValidator->validateCustomer($order) &&
@@ -207,7 +207,7 @@ class Order
      * @param \Magento\Sales\Model\Order $order
      * @return bool
      */
-    public function canRepeatPayment(\Magento\Sales\Model\Order $order)
+    function canRepeatPayment(\Magento\Sales\Model\Order $order)
     {
         return
             $this->orderValidator->validateCustomer($order) &&
@@ -220,7 +220,7 @@ class Order
     /**
      * @return bool
      */
-    public function paymentSuccessCheck()
+    function paymentSuccessCheck()
     {
         return is_null($this->request->getParam('exception'));
     }

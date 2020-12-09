@@ -28,7 +28,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
      * @param SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
      */
-    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
 

@@ -18,13 +18,13 @@ class Notification
     /**
      * @param \Alignet\Paymecheckout\Model\Client\Classic\Config $configHelper
      */
-    public function __construct(
+    function __construct(
         \Alignet\Paymecheckout\Model\Client\Classic\Config $configHelper
     ) {
         $this->configHelper = $configHelper;
     }
 
-    public function getPayuplOrderId($request)
+    function getPayuplOrderId($request)
     {
         if (!$request->isPost()) {
             throw new LocalizedException(new Phrase('POST request is required.'));

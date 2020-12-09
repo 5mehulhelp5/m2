@@ -21,7 +21,7 @@ class ExtOrderId
      * @param \Alignet\Paymecheckout\Model\ResourceModel\Transaction $transactionResource
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
      */
-    public function __construct(
+    function __construct(
         \Alignet\Paymecheckout\Model\ResourceModel\Transaction $transactionResource,
         \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
     ) {
@@ -33,7 +33,7 @@ class ExtOrderId
      * @param \Magento\Sales\Model\Order $order
      * @return string
      */
-    public function generate(\Magento\Sales\Model\Order $order)
+    function generate(\Magento\Sales\Model\Order $order)
     {
         $try = $this->transactionResource->getLastTryByOrderId($order->getId()) + 1;
         return $order->getIncrementId() . ':' . $this->dateTime->timestamp() . ':' . $try;

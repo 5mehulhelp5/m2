@@ -75,7 +75,7 @@ class DataGetter
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
      * @param \Alignet\Paymecheckout\Model\Session $session
      */
-    public function __construct(
+    function __construct(
         \Alignet\Paymecheckout\Model\Order\ExtOrderId $extOrderIdHelper,
         \Alignet\Paymecheckout\Model\Client\Classic\Config $configHelper,
         \Magento\Framework\Stdlib\DateTime\DateTime $dateTime,
@@ -91,7 +91,7 @@ class DataGetter
      * @param \Magento\Sales\Model\Order $order
      * @return array
      */
-    public function getBasicData(\Magento\Sales\Model\Order $order)
+    function getBasicData(\Magento\Sales\Model\Order $order)
     {
         $incrementId =(int)$order->getIncrementId();
         $billingAddress = $order->getBillingAddress();
@@ -189,7 +189,7 @@ class DataGetter
         return $data;
     }
 
-    public function setCurrencyIso($code){
+    function setCurrencyIso($code){
         $iso_code = '' ;
         switch ($code) {
             case 'USD':
@@ -212,7 +212,7 @@ class DataGetter
         return $iso_code;
     }
 
-  public function purchaseVerification($purchOperNum, $purchAmo, $purchCurrCod, $authRes = null)
+  function purchaseVerification($purchOperNum, $purchAmo, $purchCurrCod, $authRes = null)
     {
         $concatPurchase = $this->acquirerId.$this->idCommerce.$purchOperNum.$purchAmo.$purchCurrCod.$authRes.$this->key;
         
@@ -220,7 +220,7 @@ class DataGetter
     }
 
 
-    public function userCodePayme($params)
+    function userCodePayme($params)
     {
         
         $concatRegister = $this->idEntCommerce.$params['userCommerce'].$params['billingEmail'].$this->keywallet;
@@ -310,7 +310,7 @@ class DataGetter
     /**
      * @return string
      */
-    public function getMerchantId()
+    function getMerchantId()
     {
         return $this->configHelper->getConfig('acquirerId');
     }
@@ -318,7 +318,7 @@ class DataGetter
     /**
      * @return string
      */
-    public function getAccountId()
+    function getAccountId()
     {
         return $this->configHelper->getConfig('idCommerce');
     }
@@ -326,7 +326,7 @@ class DataGetter
     /**
      * @return string
      */
-    public function getTestMode()
+    function getTestMode()
     {
         return $this->configHelper->getConfig('test');
     }
@@ -334,7 +334,7 @@ class DataGetter
     /**
      * @return string
      */
-    public function getClientIp()
+    function getClientIp()
     {
         return $_SERVER['REMOTE_ADDR'];
     }
@@ -342,7 +342,7 @@ class DataGetter
     /**
      * @return int
      */
-    public function getTs()
+    function getTs()
     {
         return $this->dateTime->timestamp();
     }
@@ -351,7 +351,7 @@ class DataGetter
      * @param array $data
      * @return string
      */
-    public function getSigForOrderCreate(array $data = [])
+    function getSigForOrderCreate(array $data = [])
     {
         //Signature Format
         //“ApiKey~merchantId~referenceCode~amount~currency”.
@@ -365,7 +365,7 @@ class DataGetter
      * @param array $data
      * @return string
      */
-    public function getSigForOrderRetrieve(array $data = [])
+    function getSigForOrderRetrieve(array $data = [])
     {
         return md5(
             $this->configHelper->getConfig('keywallet')

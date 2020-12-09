@@ -19,7 +19,7 @@ class DataValidator extends \Alignet\Paymecheckout\Model\Client\DataValidator
      * @param array $data
      * @return bool
      */
-    public function validateBasicData(array $data = [])
+    function validateBasicData(array $data = [])
     {
 
         return true;

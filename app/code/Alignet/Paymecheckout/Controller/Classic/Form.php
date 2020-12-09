@@ -21,7 +21,7 @@ class Form extends \Magento\Framework\App\Action\Action
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Alignet\Paymecheckout\Model\Session $session
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Alignet\Paymecheckout\Model\Session $session,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory
@@ -34,7 +34,7 @@ class Form extends \Magento\Framework\App\Action\Action
     /**
      * @return \Magento\Framework\Controller\Result\Redirect|\Magento\Framework\View\Result\Page
      */
-    public function execute()
+    function execute()
     {
         /**
          * @var $resultRedirect \Magento\Framework\Controller\Result\Redirect

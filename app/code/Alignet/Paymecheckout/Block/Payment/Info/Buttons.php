@@ -9,7 +9,7 @@ class Buttons extends \Magento\Framework\View\Element\Template
 {
     protected $_template = 'payment/info/buttons.phtml';
 
-    public function getOrderId()
+    function getOrderId()
     {
         return $this->getParentBlock()->getInfo()->getOrder()->getId();
     }

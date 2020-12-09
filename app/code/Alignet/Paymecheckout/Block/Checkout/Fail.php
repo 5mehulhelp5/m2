@@ -12,7 +12,7 @@ class Fail extends \Magento\Checkout\Block\Onepage\Success
      */
     protected $paymentHelper;
 
-    public function __construct(
+    function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Sales\Model\Order\Config $orderConfig,
@@ -37,7 +37,7 @@ class Fail extends \Magento\Checkout\Block\Onepage\Success
      *
      * @return string|false
      */
-    public function getPaymentUrl()
+    function getPaymentUrl()
     {
         $orderId = $this->_checkoutSession->getLastOrderId();
         if ($orderId) {

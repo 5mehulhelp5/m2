@@ -13,25 +13,25 @@ interface OrderInterface
      * @param array $data
      * @return bool
      */
-    public function validateCreate(array $data = []);
+    function validateCreate(array $data = []);
 
     /**
      * @param $id
      * @return bool
      */
-    public function validateRetrieve($id);
+    function validateRetrieve($id);
 
     /**
      * @param $id
      * @return bool
      */
-    public function validateCancel($id);
+    function validateCancel($id);
 
     /**
      * @param array $data
      * @return bool
      */
-    public function validateStatusUpdate(array $data = []);
+    function validateStatusUpdate(array $data = []);
 
     /**
      * Returns false on fail or array with the following keys on success: orderId, redirectUri, extOrderId
@@ -39,7 +39,7 @@ interface OrderInterface
      * @param array $data
      * @return array|false
      */
-    public function create(array $data);
+    function create(array $data);
 
     /**
      * Return false on fail or array with the following keys: status, amount on success.
@@ -47,7 +47,7 @@ interface OrderInterface
      * @param string $paymecheckoutOrderId
      * @return array|false
      */
-    public function retrieve($paymecheckoutOrderId);
+    function retrieve($paymecheckoutOrderId);
 
     /**
      * Return false on fail or true success.
@@ -55,7 +55,7 @@ interface OrderInterface
      * @param string $paymecheckoutOrderId
      * @return bool
      */
-    public function cancel($paymecheckoutOrderId);
+    function cancel($paymecheckoutOrderId);
 
     /**
      * Return false on fail or true success.
@@ -63,7 +63,7 @@ interface OrderInterface
      * @param array $data
      * @return bool
      */
-    public function statusUpdate(array $data = []);
+    function statusUpdate(array $data = []);
 
     /**
      * Returns false on fail or array with the following keys on success: paymecheckoutOrderId, status, amount
@@ -71,13 +71,13 @@ interface OrderInterface
      * @param \Magento\Framework\App\Request\Http $request
      * @return array|false
      */
-    public function consumeNotification(\Magento\Framework\App\Request\Http $request);
+    function consumeNotification(\Magento\Framework\App\Request\Http $request);
 
     /**
      * @param \Magento\Sales\Model\Order $order
      * @return array
      */
-    public function getDataForOrderCreate(\Magento\Sales\Model\Order $order);
+    function getDataForOrderCreate(\Magento\Sales\Model\Order $order);
 
     /**
      * Adds API-related special data to standard order data.
@@ -85,25 +85,25 @@ interface OrderInterface
      * @param array $data
      * @return array
      */
-    public function addSpecialDataToOrder(array $data = []);
+    function addSpecialDataToOrder(array $data = []);
 
     /**
      * @return string
      */
-    public function getNewStatus();
+    function getNewStatus();
 
     /**
      * Checks if payment was successful.
      *
      * @return bool
      */
-    public function paymentSuccessCheck();
+    function paymentSuccessCheck();
 
     /**
      * @param string $paymecheckoutOrderId
      * @return bool
      */
-    public function canProcessNotification($paymecheckoutOrderId);
+    function canProcessNotification($paymecheckoutOrderId);
 
     /**
      * @param string $paymecheckoutOrderId
@@ -112,11 +112,11 @@ interface OrderInterface
      * @return \Magento\Framework\Controller\Result\Raw
      * @throws LocalizedException
      */
-    public function processNotification($paymecheckoutOrderId, $status, $amount);
+    function processNotification($paymecheckoutOrderId, $status, $amount);
 
     /**
      * @param mixed $status
      * @return string
      */
-    public function getStatusDescription($status);
+    function getStatusDescription($status);
 }

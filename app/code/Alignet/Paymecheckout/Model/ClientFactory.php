@@ -20,7 +20,7 @@ class ClientFactory
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
@@ -32,7 +32,7 @@ class ClientFactory
      * @param array $data
      * @return object
      */
-    public function create(array $data = [])
+    function create(array $data = [])
     {
        
         $class = Client\Classic::class;

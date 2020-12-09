@@ -24,7 +24,7 @@ class Processor
      * @param \Alignet\Paymecheckout\Model\Order $orderHelper
      * @param \Alignet\Paymecheckout\Model\Transaction\Service $transactionService
      */
-    public function __construct(
+    function __construct(
         \Alignet\Paymecheckout\Model\Order $orderHelper,
         \Alignet\Paymecheckout\Model\Transaction\Service $transactionService
     ) {
@@ -38,7 +38,7 @@ class Processor
      * @param bool $close
      * @throws LocalizedException
      */
-    public function processOld($paymecheckoutOrderId, $status, $close = false)
+    function processOld($paymecheckoutOrderId, $status, $close = false)
     {
         $this->transactionService->updateStatus($paymecheckoutOrderId, $status, $close);
     }
@@ -48,7 +48,7 @@ class Processor
      * @param string $status
      * @throws LocalizedException
      */
-    public function processPending($paymecheckoutOrderId, $status)
+    function processPending($paymecheckoutOrderId, $status)
     {
         $this->transactionService->updateStatus($paymecheckoutOrderId, $status);
     }
@@ -58,7 +58,7 @@ class Processor
      * @param string $status
      * @throws LocalizedException
      */
-    public function processHolded($paymecheckoutOrderId, $status)
+    function processHolded($paymecheckoutOrderId, $status)
     {
         $order = $this->loadOrderByPayuplOrderId($paymecheckoutOrderId);
         $this->orderHelper->setHoldedOrderStatus($order, $status);
@@ -71,7 +71,7 @@ class Processor
      * @throws LocalizedException
      * @todo Implement some additional logic for transaction confirmation by store owner.
      */
-    public function processWaiting($paymecheckoutOrderId, $status)
+    function processWaiting($paymecheckoutOrderId, $status)
     {
         $this->transactionService->updateStatus($paymecheckoutOrderId, $status);
     }
@@ -82,7 +82,7 @@ class Processor
      * @param float $amount
      * @throws LocalizedException
      */
-    public function processCompleted($paymecheckoutOrderId, $status, $amount)
+    function processCompleted($paymecheckoutOrderId, $status, $amount)
     {
         $order = $this->loadOrderByPayuplOrderId($paymecheckoutOrderId);
         $this->orderHelper->completePayment($order, $amount, $paymecheckoutOrderId);

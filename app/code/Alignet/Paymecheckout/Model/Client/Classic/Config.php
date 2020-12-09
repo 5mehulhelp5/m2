@@ -95,7 +95,7 @@ class Config implements ConfigInterface
     /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
         $this->scopeConfig = $scopeConfig;
@@ -105,7 +105,7 @@ class Config implements ConfigInterface
      * @return true
      * @throws LocalizedException
      */
-    public function setConfig()
+    function setConfig()
     {
 
 
@@ -241,7 +241,7 @@ class Config implements ConfigInterface
      * @param string|null $key
      * @return string|array
      */
-    public function getConfig($key = null)
+    function getConfig($key = null)
     {
          $config = [
 

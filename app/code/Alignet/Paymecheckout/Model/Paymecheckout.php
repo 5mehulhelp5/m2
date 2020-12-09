@@ -50,7 +50,7 @@ class Paymecheckout  extends AbstractMethod
     protected $urlBuilder;
 
 
-    public function __construct(
+    function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory,
@@ -79,7 +79,7 @@ class Paymecheckout  extends AbstractMethod
     }
 
 
-    public function canUseForCurrency($currencyCode)
+    function canUseForCurrency($currencyCode)
     {
         // if (!in_array($currencyCode, $this->_supportedCurrencyCodes)) {
         //     return false;

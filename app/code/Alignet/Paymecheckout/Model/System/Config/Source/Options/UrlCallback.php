@@ -28,7 +28,7 @@ class UrlCallback extends Field
      * @return string
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getWebhookUrl()
+    function getWebhookUrl()
     {
 
         return $this->_storeManager->getStore()->getBaseUrl('web') . 'squareupomni/hooks/notify/';

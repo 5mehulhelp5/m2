@@ -19,7 +19,7 @@ class Transaction extends AbstractDb
      * @param \Magento\Framework\Stdlib\DateTime $date
      * @param string|null $resourcePrefix
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\Model\ResourceModel\Db\Context $context,
         \Magento\Framework\Stdlib\DateTime $date,
         $resourcePrefix = null
@@ -35,7 +35,7 @@ class Transaction extends AbstractDb
      * @param int $orderId
      * @return string|false
      */
-    public function getLastPayuplOrderIdByOrderId($orderId)
+    function getLastPayuplOrderIdByOrderId($orderId)
     {
         $adapter = $this->getConnection();
         $select = $adapter->select()
@@ -57,7 +57,7 @@ class Transaction extends AbstractDb
      * @param string $paymecheckoutOrderId
      * @return bool
      */
-    public function checkIfNewestByPayuplOrderId($paymecheckoutOrderId)
+    function checkIfNewestByPayuplOrderId($paymecheckoutOrderId)
     {
         $transactionTableName = $this->_resources->getTableName('sales_payment_transaction');
         $adapter = $this->getConnection();
@@ -82,7 +82,7 @@ class Transaction extends AbstractDb
      * @param string $paymecheckoutOrderId
      * @return int|false
      */
-    public function getOrderIdByPayuplOrderId($paymecheckoutOrderId)
+    function getOrderIdByPayuplOrderId($paymecheckoutOrderId)
     {
         return $this->getOneFieldByAnother('order_id', 'txn_id', $paymecheckoutOrderId);
     }
@@ -91,7 +91,7 @@ class Transaction extends AbstractDb
      * @param string $paymecheckoutOrderId
      * @return string|false
      */
-    public function getStatusByPayuplOrderId($paymecheckoutOrderId)
+    function getStatusByPayuplOrderId($paymecheckoutOrderId)
     {
         return $this->getAdditionalDataByPayuplOrderId($paymecheckoutOrderId, 'status');
     }
@@ -100,7 +100,7 @@ class Transaction extends AbstractDb
      * @param int $orderId
      * @return int
      */
-    public function getLastTryByOrderId($orderId)
+    function getLastTryByOrderId($orderId)
     {
         return $this->getLastAdditionalDataFieldByOrderId($orderId, 'try', 0);
     }
@@ -109,7 +109,7 @@ class Transaction extends AbstractDb
      * @param string $paymecheckoutOrderId
      * @return string|false
      */
-    public function getExtOrderIdByPayuplOrderId($paymecheckoutOrderId)
+    function getExtOrderIdByPayuplOrderId($paymecheckoutOrderId)
     {
         return $this->getAdditionalDataByPayuplOrderId($paymecheckoutOrderId, 'order_id');
     }
@@ -118,7 +118,7 @@ class Transaction extends AbstractDb
      * @param string $paymecheckoutOrderId
      * @return int|false
      */
-    public function getIdByPayuplOrderId($paymecheckoutOrderId)
+    function getIdByPayuplOrderId($paymecheckoutOrderId)
     {
         return $this->getOneFieldByAnother('transaction_id', 'txn_id', $paymecheckoutOrderId);
     }
@@ -127,7 +127,7 @@ class Transaction extends AbstractDb
      * @param int $orderId
      * @return string|false
      */
-    public function getLastStatusByOrderId($orderId)
+    function getLastStatusByOrderId($orderId)
     {
         return $this->getLastAdditionalDataFieldByOrderId($orderId, 'status', false);
     }

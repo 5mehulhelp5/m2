@@ -16,7 +16,7 @@ class Processor
      */
     protected $orderProcessor;
 
-    public function __construct(
+    function __construct(
         \Alignet\Paymecheckout\Model\Order\Processor $orderProcessor
     ) {
         $this->orderProcessor = $orderProcessor;
@@ -30,7 +30,7 @@ class Processor
      * @return bool
      * @throws LocalizedException
      */
-    public function processStatusChange($paymecheckoutOrderId, $status = '', $amount = null, $newest = true)
+    function processStatusChange($paymecheckoutOrderId, $status = '', $amount = null, $newest = true)
     {
         if (!in_array($status, [
             Order::STATUS_NEW,

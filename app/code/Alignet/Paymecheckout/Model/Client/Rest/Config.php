@@ -20,7 +20,7 @@ class Config implements ConfigInterface
     /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
         $this->scopeConfig = $scopeConfig;
@@ -30,7 +30,7 @@ class Config implements ConfigInterface
      * @return bool
      * @throws LocalizedException
      */
-    public function setConfig()
+    function setConfig()
     {
         \OpenPayU_Configuration::setEnvironment('secure');
         $merchantPosId = $this->scopeConfig->getValue(Payupl::XML_PATH_POS_ID, 'store');
@@ -52,7 +52,7 @@ class Config implements ConfigInterface
      * @param string $key
      * @return array
      */
-    public function getConfig($key = null)
+    function getConfig($key = null)
     {
         $config = [
             'merchant_pos_id' => \OpenPayU_Configuration::getMerchantPosId(),

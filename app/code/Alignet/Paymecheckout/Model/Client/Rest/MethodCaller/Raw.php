@@ -17,7 +17,7 @@ class Raw implements RawInterface
      * @return \stdClass
      * @throws LocalizedException
      */
-    public function call($methodName, array $args = [])
+    function call($methodName, array $args = [])
     {
         $result = call_user_func_array([$this, $methodName], $args);
         return $this->getResponse($result);
@@ -28,7 +28,7 @@ class Raw implements RawInterface
      * @return \OpenPayU_Result
      * @throws \OpenPayU_Exception
      */
-    public function orderCreate(array $data)
+    function orderCreate(array $data)
     {
         return \OpenPayU_Order::create($data);
     }
@@ -38,7 +38,7 @@ class Raw implements RawInterface
      * @return \OpenPayU_Result
      * @throws \OpenPayU_Exception
      */
-    public function orderRetrieve($id)
+    function orderRetrieve($id)
     {
         return \OpenPayU_Order::retrieve($id);
     }
@@ -48,7 +48,7 @@ class Raw implements RawInterface
      * @return \OpenPayU_Result
      * @throws \OpenPayU_Exception
      */
-    public function orderCancel($id)
+    function orderCancel($id)
     {
         return \OpenPayU_Order::cancel($id);
     }
@@ -58,7 +58,7 @@ class Raw implements RawInterface
      * @return \OpenPayU_Result
      * @throws \OpenPayU_Exception
      */
-    public function orderStatusUpdate(array $data)
+    function orderStatusUpdate(array $data)
     {
         return \OpenPayU_Order::statusUpdate($data);
     }
@@ -68,7 +68,7 @@ class Raw implements RawInterface
      * @return \OpenPayU_Result
      * @throws \OpenPayU_Exception
      */
-    public function orderConsumeNotification($data)
+    function orderConsumeNotification($data)
     {
         return \OpenPayU_Order::consumeNotification($data);
     }

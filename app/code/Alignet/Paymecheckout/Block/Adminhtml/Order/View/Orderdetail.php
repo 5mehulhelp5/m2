@@ -1,7 +1,7 @@
 <?php
 namespace Alignet\Paymecheckout\Block\Adminhtml\Order\View;
 class Orderdetail extends \Magento\Backend\Block\Template {
-	public function getResponse() {
+	function getResponse() {
 		$data = [];
 		$data[0] = '';
 		$data[1] = '';

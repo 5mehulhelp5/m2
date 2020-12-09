@@ -17,7 +17,7 @@ class Validator
      */
     protected $customerSession;
 
-    public function __construct(
+    function __construct(
         \Alignet\Paymecheckout\Model\ResourceModel\Transaction $transactionResource,
         \Magento\Customer\Model\Session $customerSession
     ) {
@@ -29,7 +29,7 @@ class Validator
      * @param \Magento\Sales\Model\Order $order
      * @return bool
      */
-    public function validateNoTransactions(\Magento\Sales\Model\Order $order)
+    function validateNoTransactions(\Magento\Sales\Model\Order $order)
     {
         return $this->transactionResource->getLastPayuplOrderIdByOrderId($order->getId()) === false;
     }
@@ -38,7 +38,7 @@ class Validator
      * @param \Magento\Sales\Model\Order $order
      * @return bool
      */
-    public function validatePaymentMethod(\Magento\Sales\Model\Order $order)
+    function validatePaymentMethod(\Magento\Sales\Model\Order $order)
     {
         return $order->getPayment()->getMethod() === \Alignet\Paymecheckout\Model\Paymecheckout::CODE;
     }
@@ -47,7 +47,7 @@ class Validator
      * @param \Magento\Sales\Model\Order $order
      * @return bool
      */
-    public function validateState(\Magento\Sales\Model\Order $order)
+    function validateState(\Magento\Sales\Model\Order $order)
     {
         return !in_array($order->getState(), [
             \Magento\Sales\Model\Order::STATE_CANCELED,
@@ -60,7 +60,7 @@ class Validator
      * @param \Magento\Sales\Model\Order $order
      * @return bool
      */
-    public function validateCustomer(\Magento\Sales\Model\Order $order)
+    function validateCustomer(\Magento\Sales\Model\Order $order)
     {
         return $order->getCustomerId() === $this->customerSession->getCustomerId();
     }
@@ -69,7 +69,7 @@ class Validator
      * @param \Magento\Sales\Model\Order $order
      * @return bool
      */
-    public function validateNotPaid(\Magento\Sales\Model\Order $order)
+    function validateNotPaid(\Magento\Sales\Model\Order $order)
     {
         return !$order->getTotalPaid();
     }

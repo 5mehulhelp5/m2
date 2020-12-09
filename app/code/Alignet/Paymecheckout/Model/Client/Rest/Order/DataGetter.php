@@ -28,7 +28,7 @@ class DataGetter
      * @param \Magento\Framework\View\Context $context
      * @param Config $configHelper
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\View\Context $context,
         Config $configHelper,
         \Alignet\Paymecheckout\Model\Order\ExtOrderId $extOrderIdHelper
@@ -41,7 +41,7 @@ class DataGetter
     /**
      * @return string
      */
-    public function getContinueUrl()
+    function getContinueUrl()
     {
         return $this->urlBuilder->getUrl('orba_payupl/payment/end');
     }
@@ -49,7 +49,7 @@ class DataGetter
     /**
      * @return string
      */
-    public function getNotifyUrl()
+    function getNotifyUrl()
     {
         return $this->urlBuilder->getUrl('orba_payupl/payment/notify');
     }
@@ -57,7 +57,7 @@ class DataGetter
     /**
      * @return string
      */
-    public function getCustomerIp()
+    function getCustomerIp()
     {
         return $_SERVER['REMOTE_ADDR'];
     }
@@ -65,7 +65,7 @@ class DataGetter
     /**
      * @return string
      */
-    public function getMerchantPosId()
+    function getMerchantPosId()
     {
         return $this->configHelper->getConfig('merchant_pos_id');
     }
@@ -74,7 +74,7 @@ class DataGetter
      * @param \Magento\Sales\Model\Order $order
      * @return array
      */
-    public function getBasicData(\Magento\Sales\Model\Order $order)
+    function getBasicData(\Magento\Sales\Model\Order $order)
     {
         $incrementId = $order->getIncrementId();
         return [
@@ -89,7 +89,7 @@ class DataGetter
      * @param \Magento\Sales\Model\Order $order
      * @return array
      */
-    public function getProductsData(\Magento\Sales\Model\Order $order)
+    function getProductsData(\Magento\Sales\Model\Order $order)
     {
         /**
          * @var $orderItem \Magento\Sales\Api\Data\OrderItemInterface
@@ -110,7 +110,7 @@ class DataGetter
      * @param \Magento\Sales\Model\Order $order
      * @return array|null
      */
-    public function getShippingData(\Magento\Sales\Model\Order $order)
+    function getShippingData(\Magento\Sales\Model\Order $order)
     {
         if ($order->getShippingMethod()) {
             $shippingInclTax = (float) $order->getShippingInclTax();
@@ -129,7 +129,7 @@ class DataGetter
      * @param \Magento\Sales\Model\Order $order
      * @return array|null
      */
-    public function getBuyerData(\Magento\Sales\Model\Order $order)
+    function getBuyerData(\Magento\Sales\Model\Order $order)
     {
         /**
          * @var $billingAddress \Magento\Sales\Api\Data\OrderAddressInterface

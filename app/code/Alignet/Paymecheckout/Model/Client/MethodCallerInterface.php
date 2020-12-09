@@ -12,5 +12,5 @@ interface MethodCallerInterface
      * @param array $args
      * @return mixed
      */
-    public function call($methodName, array $args = []);
+    function call($methodName, array $args = []);
 }

@@ -23,7 +23,7 @@ class Payment extends AbstractHelper
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Alignet\Paymecheckout\Model\ResourceModel\Transaction $transactionResource
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Alignet\Paymecheckout\Model\ResourceModel\Transaction $transactionResource,
         \Alignet\Paymecheckout\Model\Order $orderHelper
@@ -37,7 +37,7 @@ class Payment extends AbstractHelper
      * @param int $orderId
      * @return string|false
      */
-    public function getStartPaymentUrl($orderId)
+    function getStartPaymentUrl($orderId)
     {
         $order = $this->orderHelper->loadOrderById($orderId);
         
@@ -51,7 +51,7 @@ class Payment extends AbstractHelper
      * @param int $orderId
      * @return string|false
      */
-    public function getRepeatPaymentUrl($orderId)
+    function getRepeatPaymentUrl($orderId)
     {
         $order = $this->orderHelper->loadOrderById($orderId);
         if ($order && $this->orderHelper->canRepeatPayment($order)) {
@@ -67,7 +67,7 @@ class Payment extends AbstractHelper
      * @param string $paymecheckoutOrderId
      * @return bool
      */
-    public function getOrderIdIfCanRepeat($paymecheckoutOrderId = null)
+    function getOrderIdIfCanRepeat($paymecheckoutOrderId = null)
     {
         if ($paymecheckoutOrderId && $this->transactionResource->checkIfNewestByPayuplOrderId($paymecheckoutOrderId)) {
             return $this->transactionResource->getOrderIdByPayuplOrderId($paymecheckoutOrderId);

@@ -15,5 +15,5 @@ interface RawInterface
      * @return \stdClass
      * @throws LocalizedException
      */
-    public function call($methodName, array $args = []);
+    function call($methodName, array $args = []);
 }

@@ -18,7 +18,7 @@ class Config extends \Magento\Sales\Model\Order\Config
      */
     protected $scopeConfig;
 
-    public function __construct(
+    function __construct(
         \Magento\Sales\Model\Order\StatusFactory $orderStatusFactory,
         \Magento\Sales\Model\ResourceModel\Order\Status\CollectionFactory $orderStatusCollectionFactory,
         \Magento\Framework\App\State $state,
@@ -42,7 +42,7 @@ class Config extends \Magento\Sales\Model\Order\Config
      * @param string $state
      * @return string
      */
-    public function getStateDefaultStatus($state): ?string
+    function getStateDefaultStatus($state): ?string
     {
         switch ($state) {
             case Order::STATE_PENDING_PAYMENT:

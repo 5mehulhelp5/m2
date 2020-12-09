@@ -17,7 +17,7 @@ class Fail extends \Magento\Framework\View\Element\Template
      */
     protected $session;
 
-    public function __construct(
+    function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Alignet\Paymecheckout\Model\Session $session,
         \Alignet\Paymecheckout\Helper\Payment $paymentHelper,
@@ -34,7 +34,7 @@ class Fail extends \Magento\Framework\View\Element\Template
     /**
      * @return string|false
      */
-    public function getPaymentUrl()
+    function getPaymentUrl()
     {
         $orderId = $this->session->getLastOrderId();
         if ($orderId) {

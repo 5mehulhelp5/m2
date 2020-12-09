@@ -35,7 +35,7 @@ class Notify extends \Magento\Framework\App\Action\Action
      * @param \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory
      * @param \Alignet\Paymecheckout\Logger\Logger $logger
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Alignet\Paymecheckout\Model\ClientFactory $clientFactory,
         \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory,
@@ -48,7 +48,7 @@ class Notify extends \Magento\Framework\App\Action\Action
         $this->logger = $logger;
     }
 
-    public function execute()
+    function execute()
     {
         /**
          * @var $client \Alignet\Paymecheckout\Model\Client

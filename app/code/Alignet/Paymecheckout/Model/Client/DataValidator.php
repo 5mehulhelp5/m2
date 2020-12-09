@@ -11,7 +11,7 @@ class DataValidator
      * @param mixed $data
      * @return bool
      */
-    public function validateEmpty($data)
+    function validateEmpty($data)
     {
         return !empty($data);
     }
@@ -20,7 +20,7 @@ class DataValidator
      * @param mixed $value
      * @return bool
      */
-    public function validatePositiveInt($value)
+    function validatePositiveInt($value)
     {
         return is_integer($value) && $value > 0;
     }
@@ -29,7 +29,7 @@ class DataValidator
      * @param mixed $value
      * @return bool
      */
-    public function validatePositiveFloat($value)
+    function validatePositiveFloat($value)
     {
         return (is_integer($value) || is_float($value)) && $value > 0;
     }

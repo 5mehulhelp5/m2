@@ -2,12 +2,12 @@
 namespace Alignet\Paymecheckout\Block;
 class Response extends \Magento\Framework\View\Element\Template
 {
-	public function __construct(\Magento\Framework\View\Element\Template\Context $context)
+	function __construct(\Magento\Framework\View\Element\Template\Context $context)
 	{
 		parent::__construct($context);
 	}
 
-	public function sayHello()
+	function sayHello()
 	{
 		return __('Hello World');
 	}

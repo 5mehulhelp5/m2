@@ -28,7 +28,7 @@ class Client
      * @param Client\ConfigInterface $configHelper
      * @param Client\OrderInterface $orderHelper
      */
-    public function __construct(
+    function __construct(
         Client\ConfigInterface $configHelper,
         Client\OrderInterface $orderHelper
 
@@ -43,7 +43,7 @@ class Client
      * @return array (keys: orderId, redirectUri, extOrderId)
      * @throws LocalizedException
      */
-    public function orderCreate(array $data = [])
+    function orderCreate(array $data = [])
     {
         if (!$this->orderHelper->validateCreate($data)) {
             throw new LocalizedException(new Phrase('Order request data array is invalid.'));
@@ -62,7 +62,7 @@ class Client
      * @return string Transaction status
      * @throws LocalizedException
      */
-    public function orderRetrieve($paymecheckoutOrderId)
+    function orderRetrieve($paymecheckoutOrderId)
     {
         if (!$this->orderHelper->validateRetrieve($paymecheckoutOrderId)) {
             throw new LocalizedException(new Phrase('ID of order to retrieve is empty.'));
@@ -79,7 +79,7 @@ class Client
      * @return bool|\OpenPayU_Result
      * @throws LocalizedException
      */
-    public function orderCancel($paymecheckoutOrderId)
+    function orderCancel($paymecheckoutOrderId)
     {
         if (!$this->orderHelper->validateCancel($paymecheckoutOrderId)) {
             throw new LocalizedException(new Phrase('ID of order to cancel is empty.'));
@@ -96,7 +96,7 @@ class Client
      * @return true
      * @throws LocalizedException
      */
-    public function orderStatusUpdate(array $data = [])
+    function orderStatusUpdate(array $data = [])
     {
         if (!$this->orderHelper->validateStatusUpdate($data)) {
             throw new LocalizedException(new Phrase('Order status update request data array is invalid.'));
@@ -115,7 +115,7 @@ class Client
      * @return array (keys: paymecheckoutOrderId, status, amount)
      * @throws LocalizedException
      */
-    public function orderConsumeNotification(\Magento\Framework\App\Request\Http $request)
+    function orderConsumeNotification(\Magento\Framework\App\Request\Http $request)
     {
         $result = $this->orderHelper->consumeNotification($request);
         if (!$result) {
@@ -128,7 +128,7 @@ class Client
     /**
      * @return Client\OrderInterface
      */
-    public function getOrderHelper()
+    function getOrderHelper()
     {
         return $this->orderHelper;
     }
@@ -136,7 +136,7 @@ class Client
     /**
      * @return Client\ConfigInterface
      */
-    public function getConfigHelper()
+    function getConfigHelper()
     {
         return $this->configHelper;
     }

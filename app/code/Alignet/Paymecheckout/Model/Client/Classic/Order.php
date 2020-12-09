@@ -100,7 +100,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
      * @param Order\Processor $orderProcessor
      * @param \Magento\Framework\Controller\Result\RawFactory $rawResultFactory
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\View\Context $context,
         Order\DataValidator $dataValidator,
         Order\DataGetter $dataGetter,
@@ -129,7 +129,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function validateCreate(array $data = [])
+    function validateCreate(array $data = [])
     {
         return
             $this->dataValidator->validateEmpty($data) &&
@@ -139,7 +139,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function validateRetrieve($paymecheckoutOrderId)
+    function validateRetrieve($paymecheckoutOrderId)
     {
         return $this->dataValidator->validateEmpty($paymecheckoutOrderId);
     }
@@ -147,7 +147,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function validateCancel($paymecheckoutOrderId)
+    function validateCancel($paymecheckoutOrderId)
     {
         return $this->dataValidator->validateEmpty($paymecheckoutOrderId);
     }
@@ -155,7 +155,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function validateStatusUpdate(array $data = [])
+    function validateStatusUpdate(array $data = [])
     {
         // TODO: Implement validateStatusUpdate() method.
     }
@@ -163,7 +163,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function create(array $data)
+    function create(array $data)
     {
         $this->session->setOrderCreateData($data);
         
@@ -177,7 +177,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function retrieve($paymecheckoutOrderId)
+    function retrieve($paymecheckoutOrderId)
     {
         $posId = $this->dataGetter->getPosId();
         $ts = $this->dataGetter->getTs();
@@ -204,7 +204,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function cancel($paymecheckoutOrderId)
+    function cancel($paymecheckoutOrderId)
     {
         // TODO: Implement cancel() method.
     }
@@ -212,7 +212,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function statusUpdate(array $data = [])
+    function statusUpdate(array $data = [])
     {
         // TODO: Implement statusUpdate() method.
     }
@@ -220,7 +220,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function consumeNotification(\Magento\Framework\App\Request\Http $request)
+    function consumeNotification(\Magento\Framework\App\Request\Http $request)
     {
         $paymecheckoutOrderId = $this->notificationHelper->getPayuplOrderId($request);
         $orderData = $this->retrieve($paymecheckoutOrderId);
@@ -237,7 +237,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function getDataForOrderCreate(\Magento\Sales\Model\Order $order)
+    function getDataForOrderCreate(\Magento\Sales\Model\Order $order)
     {
         return $this->dataGetter->getBasicData($order);
     }
@@ -245,7 +245,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function addSpecialDataToOrder(array $data = [])
+    function addSpecialDataToOrder(array $data = [])
     {
      
         return $data;
@@ -254,7 +254,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function getNewStatus()
+    function getNewStatus()
     {
         return Order::STATUS_PRE_NEW;
     }
@@ -262,7 +262,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function paymentSuccessCheck()
+    function paymentSuccessCheck()
     {
         $errorCode = $this->request->getParam('error');
         if ($errorCode) {
@@ -276,7 +276,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function canProcessNotification($paymecheckoutOrderId)
+    function canProcessNotification($paymecheckoutOrderId)
     {
         return !in_array(
             $this->transactionResource->getStatusByPayuplOrderId($paymecheckoutOrderId),
@@ -287,7 +287,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function processNotification($paymecheckoutOrderId, $status, $amount)
+    function processNotification($paymecheckoutOrderId, $status, $amount)
     {
         /**
          * @var $result \Magento\Framework\Controller\Result\Raw
@@ -304,7 +304,7 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
     /**
      * @inheritDoc
      */
-    public function getStatusDescription($status)
+    function getStatusDescription($status)
     {
         if (isset($this->statusDescription[$status])) {
             return (string) __($this->statusDescription[$status]);

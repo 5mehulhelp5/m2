@@ -7,7 +7,7 @@ namespace Alignet\Paymecheckout\Controller\Payment;
 
 class Error extends \Magento\Checkout\Controller\Onepage\Success
 {
-    public function execute()
+    function execute()
     {
         $session = $this->getOnepage()->getCheckout();
         if (!$this->_objectManager->get('Magento\Checkout\Model\Session\SuccessValidator')->isValid()) {

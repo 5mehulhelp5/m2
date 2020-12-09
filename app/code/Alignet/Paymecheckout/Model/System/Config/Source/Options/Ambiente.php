@@ -25,7 +25,7 @@ class Ambiente implements ArrayInterface
      *
      * @return array
      */
-    public function toOptionArray()
+    function toOptionArray()
     {
         return [
             [

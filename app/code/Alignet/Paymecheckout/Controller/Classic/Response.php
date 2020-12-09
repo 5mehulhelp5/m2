@@ -35,7 +35,7 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Alignet\Paymecheckout\Model\Session $session
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Alignet\Paymecheckout\Model\Session $session,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
@@ -52,7 +52,7 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
     /**
      * @return \Magento\Framework\Controller\Result\Redirect|\Magento\Framework\View\Result\Page
      */
-    public function execute()
+    function execute()
     {
         $resultPage = $this->resultPageFactory->create();
         $response = $this->getRequest()->getPostValue();
@@ -286,12 +286,12 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
         return $resultPage;
     }
 
-    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
+    function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
     {
         return null;
     }
 
-    public function validateForCsrf(RequestInterface $request): ?bool
+    function validateForCsrf(RequestInterface $request): ?bool
     {
         return true;
     }

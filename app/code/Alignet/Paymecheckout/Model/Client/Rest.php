@@ -11,7 +11,7 @@ class Rest extends \Alignet\Paymecheckout\Model\Client
      * @param Rest\Config $configHelper
      * @param Rest\Order $orderHelper
      */
-    public function __construct(
+    function __construct(
         Rest\Config $configHelper,
         Rest\Order $orderHelper
     ) {

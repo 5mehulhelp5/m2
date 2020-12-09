@@ -24,7 +24,7 @@ class Service
      * @param \Magento\Sales\Api\TransactionRepositoryInterface $transactionRepository
      * @param \Alignet\Paymecheckout\Model\ResourceModel\Transaction $transactionResource
      */
-    public function __construct(
+    function __construct(
         \Magento\Sales\Api\TransactionRepositoryInterface $transactionRepository,
         \Alignet\Paymecheckout\Model\ResourceModel\Transaction $transactionResource
     ) {
@@ -38,7 +38,7 @@ class Service
      * @param bool $close
      * @throws LocalizedException
      */
-    public function updateStatus($paymecheckoutOrderId, $status, $close = false)
+    function updateStatus($paymecheckoutOrderId, $status, $close = false)
     {
         /**
          * @var $transaction \Magento\Sales\Model\Order\Payment\Transaction

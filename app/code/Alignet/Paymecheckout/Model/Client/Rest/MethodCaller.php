@@ -7,7 +7,7 @@ namespace Alignet\Paymecheckout\Model\Client\Rest;
 
 class MethodCaller extends \Alignet\Paymecheckout\Model\Client\MethodCaller
 {
-    public function __construct(
+    function __construct(
         MethodCaller\Raw $rawMethod,
         \Alignet\Paymecheckout\Logger\Logger $logger
     ) {

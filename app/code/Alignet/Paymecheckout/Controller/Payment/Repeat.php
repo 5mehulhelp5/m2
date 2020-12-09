@@ -22,7 +22,7 @@ class Repeat extends \Magento\Framework\App\Action\Action
      */
     protected $session;
 
-    public function __construct(
+    function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Alignet\Paymecheckout\Helper\Payment $paymentHelper,
         \Alignet\Paymecheckout\Model\Session $session
@@ -33,7 +33,7 @@ class Repeat extends \Magento\Framework\App\Action\Action
         $this->session = $session;
     }
 
-    public function execute()
+    function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
         return $resultRedirect;

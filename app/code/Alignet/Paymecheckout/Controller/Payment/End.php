@@ -53,7 +53,7 @@ class End extends \Magento\Framework\App\Action\Action
      * @param \Alignet\Paymecheckout\Model\Order $orderHelper
      * @param \Alignet\Paymecheckout\Logger\Logger $logger
      */
-    public function __construct(
+    function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Checkout\Model\Session\SuccessValidator $successValidator,
         \Magento\Checkout\Model\Session $checkoutSession,
@@ -75,7 +75,7 @@ class End extends \Magento\Framework\App\Action\Action
     /**
      * @return \Magento\Framework\Controller\Result\Redirect
      */
-    public function execute()
+    function execute()
     {
         /**
          * @var $clientOrderHelper \Alignet\Paymecheckout\Model\Client\OrderInterface

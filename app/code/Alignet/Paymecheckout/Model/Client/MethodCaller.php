@@ -23,7 +23,7 @@ class MethodCaller implements MethodCallerInterface
      * @param MethodCaller\RawInterface $rawMethod
      * @param \Alignet\Paymecheckout\Logger\Logger $logger
      */
-    public function __construct(
+    function __construct(
         MethodCaller\RawInterface $rawMethod,
         \Alignet\Paymecheckout\Logger\Logger $logger
     ) {
@@ -36,7 +36,7 @@ class MethodCaller implements MethodCallerInterface
      * @param array $args
      * @return \stdClass|false
      */
-    public function call($methodName, array $args = [])
+    function call($methodName, array $args = [])
     {
         try {
             return $this->_rawMethod->call($methodName, $args);

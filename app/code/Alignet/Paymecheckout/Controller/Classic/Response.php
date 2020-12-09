@@ -48,21 +48,9 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 		$response = $this->getRequest()->getPostValue();
 		$this->session->setPostdata($response);
 		$authorizationResult = trim($response['authorizationResult']) == "" ? "-" : $response['authorizationResult'];
-		$authorizationCode = trim($response['authorizationCode']) == "" ? "-" : $response['authorizationCode'];
-		$errorCode = trim($response['errorCode']) == "" ? "-" : $response['errorCode'];
-		$errorMessage = trim($response['errorMessage']) == "" ? "-" : $response['errorMessage'];
-		$bin = trim(isset($response['bin'])) == "" ? "-" : $response['bin'];
-		// $brand = $response['brand'];
 		$response['paymentReferenceCode'] = trim(isset($response['paymentReferenceCode'])) == "" ? "-" : $response['paymentReferenceCode'];
-		$reserved1 = trim($response['reserved1']) == "" ? "-" : $response['reserved1'];
-		$reserved2 = trim($response['reserved2']) == "" ? "-" : $response['reserved2'];
-		$reserved3 = trim($response['reserved3']) == "" ? "-" : $response['reserved3'];
-		$reserved4 = trim($response['reserved4']) == "" ? "-" : $response['reserved4'];
-		$purchaseCurrencyCode = $response['purchaseCurrencyCode'];
 		$response['purchaseVerification'] =trim(isset($response['purchaseVerification'])) == "" ? "-" : $response['purchaseVerification'];
-		$purchaseOperationNumber =  $response['purchaseOperationNumber'];
 		$response['purchaseOperationNumber'] = str_pad($response['purchaseOperationNumber'], 8, "0", STR_PAD_LEFT);
-		$purchaseAmount = $response['purchaseAmount'];
 		$response['plan'] = trim(isset($response['plan'])) == "" ? "-" : $response['plan'];
 		$response['cuota'] =  trim(isset($response['cuota'])) == "" ? "-" : $response['cuota'];
 		$response['montoAproxCuota'] =  trim(isset($response['montoAproxCuota'])) == "" ? "-" : $response['montoAproxCuota'];
@@ -79,7 +67,6 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 		   echo  $response['answerMessage'];
 		   die();
 		}
-		$numeroCip  = trim(isset($response['numeroCip'])) == "" ? "-" : $response['numeroCip'];
 		$iso_code = $response['purchaseCurrencyCode'] ;
 		switch ($iso_code) {
 			case '840':
@@ -98,21 +85,13 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 				$response['purchaseCurrencyCode'] = 'USD';
 				break;
 		}
-
- 
 		$response['orden'] =  $orderId;
-
-
-
-		 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-		 $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
-				$connection = $resource->getConnection();
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+		$connection = $resource->getConnection();
 		$tableName = $resource->getTableName('payme_log');
-
-
 		$sqlDelete = "Delete FROM " . $tableName." Where purchaseOperationNumber = $orderId";
 		$connection->query($sqlDelete);
-
 		$sql = "Insert Into " . $tableName . " 
 			( 
 				id_order,
@@ -145,8 +124,7 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 				reserved10,
 				numeroCip
 			)
-			Values (
-				
+			Values (				
 			   '".$orderId."',
 			   '".$response['authorizationResult']."',
 			   '".$response['authorizationCode']."',
@@ -176,17 +154,9 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			   '".$response['reserved9']."',
 			   '".$response['reserved10']."',
 			   '".$response['numeroCip']."'
-
 			)";
-
-
-
 		$connection->query($sql);
-
-
-
 		if ($authorizationResult == '00') {
-
 			$fechaHora = $response['txDateTime'];
 			$response['msgNumeroOP'] = 'Su transacción con número de pedido '.$response['purchaseOperationNumber'].' fue autorizada con éxito.';
 			$response['msgFecha'] = 'Este pedido fue generado el ' .$fechaHora .', en breve recibirá un correo a '.$response['shippingEmail'].' con la confirmación del pago el cual debe imprimir y/o guardar ';
@@ -198,11 +168,9 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 			$objectManager->create('Magento\Sales\Model\OrderNotifier')->notify($order);
-
 			$order->save();
-
-
-		} elseif ($authorizationResult == '01'){
+		}
+		elseif ($authorizationResult == '01') {
 			$fechaHora = date("d/m/Y H:i:s");
 			$response['msgNumeroOP'] = 'Su transacción con número de pedido '.$response['purchaseOperationNumber'].' fue Denegada.  Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
 			$response['responseMSG'] = 'Transacción Denegada';
@@ -210,55 +178,49 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$order->setState(\Magento\Sales\Model\Order::STATUS_REJECTED, true)->save();
 			$order->setStatus(\Magento\Sales\Model\Order::STATUS_REJECTED, true)->save();
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido procesado Correctamente');
-
 			$order->save();
-
-		} elseif ($authorizationResult == '05') {
-		   $response['msgFecha'] ='-';
-		   $response['answerMessage'] ='Transacción Cancelada';
-		   $response['msgNumeroOP'] = 'Su transacción con número de pedido '.$response['purchaseOperationNumber'].' fue Cancelada. Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
-		   $response['responseMSG'] = 'Transacción Cancelada';
-		   $response['titleColor'] = 'danger';
+		}
+		elseif ($authorizationResult == '05') {
+			$response['msgFecha'] ='-';
+			$response['answerMessage'] ='Transacción Cancelada';
+			$response['msgNumeroOP'] = 'Su transacción con número de pedido '.$response['purchaseOperationNumber'].' fue Cancelada. Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
+			$response['responseMSG'] = 'Transacción Cancelada';
+			$response['titleColor'] = 'danger';
 			$order->setState(\Magento\Sales\Model\Order::STATE_CANCELED, true)->save();
 			$order->setStatus(\Magento\Sales\Model\Order::STATE_CANCELED, true)->save();
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido Cancelado ');
-
 			$order->save();
-		} elseif ($authorizationResult == '03') {
-
-		   if ($response['brand'] == 6 || $response['brand'] == 25) {
-					$response['brand'] = "PAGO EFECTIVO";
-				} elseif ($response['brand'] == 7 || $response['brand']== 34) {
-					$response['brand'] = "SAFETYPAY";
-				} else {
-					$response['brand'] = "-";
-				}
-
-		   $response['msgFecha'] = '-';
-		   $response['answerMessage'] ='Transacción Pendiente';
-		   $response['msgNumeroOP'] = 'Su transacción '.$response['purchaseOperationNumber'].' se encuentra pendiente de pago. Por favor acérquese a la agencia bancaria más cercana para realizar el pago con el siguiente código: <p class="pagoefectivo-cip">CIP: <b> '.$response['numeroCip'].'</b></p>';
-		   $response['responseMSG'] = 'Transacción Pendiente';
-		   $response['titleColor'] = 'success';
+		}
+		elseif ($authorizationResult == '03') {
+			if ($response['brand'] == 6 || $response['brand'] == 25) {
+				$response['brand'] = "PAGO EFECTIVO";
+			}
+			elseif ($response['brand'] == 7 || $response['brand']== 34) {
+				$response['brand'] = "SAFETYPAY";
+			}
+			else {
+				$response['brand'] = "-";
+			}
+			$response['msgFecha'] = '-';
+			$response['answerMessage'] ='Transacción Pendiente';
+			$response['msgNumeroOP'] = 'Su transacción '.$response['purchaseOperationNumber'].' se encuentra pendiente de pago. Por favor acérquese a la agencia bancaria más cercana para realizar el pago con el siguiente código: <p class="pagoefectivo-cip">CIP: <b> '.$response['numeroCip'].'</b></p>';
+			$response['responseMSG'] = 'Transacción Pendiente';
+			$response['titleColor'] = 'success';
 			$order->setState(\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT, true)->save();
 			$order->setStatus(\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT, true)->save();
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido procesado Correctamente');
-
 			$order->save();
-		} else {
-			 $response['msgFecha'] = '-';
-			 $response['responseMSG'] = 'Incompleta';
-			 $response['titleColor'] = 'danger';
-		   $response['msgNumeroOP'] = 'Su transacción con número de pedido '.$response['purchaseOperationNumber'].' fue Incompleta. Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
+		}
+		else {
+			$response['msgFecha'] = '-';
+			$response['responseMSG'] = 'Incompleta';
+			$response['titleColor'] = 'danger';
+			$response['msgNumeroOP'] = 'Su transacción con número de pedido '.$response['purchaseOperationNumber'].' fue Incompleta. Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
 			$order->setState(\Magento\Sales\Model\Order::STATE_CANCELED, true)->save();
 			$order->setStatus(\Magento\Sales\Model\Order::STATE_CANCELED, true)->save();
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido procesado Correctamente');
-
 			$order->save();
 		}
-
-
-
-		$postdata = $this->session->getPostdata();
 		$resultPage->getLayout()->getBlock('paymecheckout.classic.response')->setPostdata($response);
 		return $resultPage;
 	}

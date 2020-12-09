@@ -47,9 +47,9 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 	/**
 	 * @return \Magento\Framework\Controller\Result\Redirect|\Magento\Framework\View\Result\Page
 	 */
-	function execute(){
-		$resultPage = $this->resultPageFactory->create();
+	function execute() {
 		$res = $this->getRequest()->getPostValue(); /** @var array(string => mixed) $res */
+		df_log_l($this, $res, dfa($res, 'purchaseOperationNumber'));
 		$this->session->setPostdata($res);
 		$authorizationResult = trim($res['authorizationResult']) == "" ? "-" : $res['authorizationResult'];
 		$res['paymentReferenceCode'] = trim(isset($res['paymentReferenceCode'])) == "" ? "-" : $res['paymentReferenceCode'];
@@ -164,7 +164,9 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$op = dfp($o); /** @var OP $op */
 			dfp_action($op, IM::ACTION_AUTHORIZE_CAPTURE);
 			$o->save();
-			dfp_mail($o);
+			if (!df_my_local()) {
+				dfp_mail($o);
+			}
 			$res = [
 				'msgFecha' => "Este pedido fue generado el {$res['txDateTime']}, en breve recibirá un correo a {$res['shippingEmail']} con la confirmación del pago el cual debe imprimir y/o guardar"
 				,'msgNumeroOP' => 'Su transacción con número de pedido '.$res['purchaseOperationNumber'].' fue autorizada con éxito.'
@@ -229,8 +231,7 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$o->addStatusToHistory($o->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$o->save();
 		}
-		$resultPage->getLayout()->getBlock('paymecheckout.classic.response')->setPostdata($res);
-		return $resultPage;
+		return '00' === $authorizationResult ? df_redirect_to_success() : df_redirect_to_payment();
 	}
 
 	function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException

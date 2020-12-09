@@ -193,8 +193,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$response['responseMSG'] = 'Transacción Autorizada';
 			$response['titleColor'] = 'success';
 
-			$order->setState(\Magento\Sales\Model\Order::STATE_COMPLETE, true)->save();
-			$order->setStatus(\Magento\Sales\Model\Order::STATE_COMPLETE, true)->save();
+			$order->setState(\Magento\Sales\Model\Order::STATE_PROCESSING, true)->save();
+			$order->setStatus(\Magento\Sales\Model\Order::STATE_PROCESSING, true)->save();
 			$order->addStatusToHistory($order->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 			$objectManager->create('Magento\Sales\Model\OrderNotifier')->notify($order);

@@ -52,14 +52,10 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 	/**
 	 * @return \Magento\Framework\Controller\Result\Redirect|\Magento\Framework\View\Result\Page
 	 */
-	function execute()
-	{
+	function execute(){
 		$resultPage = $this->resultPageFactory->create();
 		$response = $this->getRequest()->getPostValue();
 		$this->session->setPostdata($response);
-
-
-
 		$authorizationResult = trim($response['authorizationResult']) == "" ? "-" : $response['authorizationResult'];
 		$authorizationCode = trim($response['authorizationCode']) == "" ? "-" : $response['authorizationCode'];
 		$errorCode = trim($response['errorCode']) == "" ? "-" : $response['errorCode'];
@@ -76,7 +72,6 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 		$purchaseOperationNumber =  $response['purchaseOperationNumber'];
 		$response['purchaseOperationNumber'] = str_pad($response['purchaseOperationNumber'], 8, "0", STR_PAD_LEFT);
 		$purchaseAmount = $response['purchaseAmount'];
-
 		$response['plan'] = trim(isset($response['plan'])) == "" ? "-" : $response['plan'];
 		$response['cuota'] =  trim(isset($response['cuota'])) == "" ? "-" : $response['cuota'];
 		$response['montoAproxCuota'] =  trim(isset($response['montoAproxCuota'])) == "" ? "-" : $response['montoAproxCuota'];
@@ -85,24 +80,15 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 		$response['fechaHora'] =  trim(isset($response['fechaHora'])) == "" ? "-" : $response['fechaHora'];
 		$response['numeroCip'] =  trim(isset($response['numeroCip'])) == "" ? "-" : $response['numeroCip'];
 		$response['brand'] =  trim(isset($response['brand'])) == "" ? "-" : $response['brand'];
-
-
 		$orderId = (int) substr($response['purchaseOperationNumber'],4,6);
 		if ($orderId) {
 		   $order = $this->orderRepository->get($orderId);
 		}
-		else
-		{
+		else {
 		   echo  $response['answerMessage'];
 		   die();
 		}
-
-
-
 		$numeroCip  = trim(isset($response['numeroCip'])) == "" ? "-" : $response['numeroCip'];
-
-
-
 		$iso_code = $response['purchaseCurrencyCode'] ;
 		switch ($iso_code) {
 			case '840':

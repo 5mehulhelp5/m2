@@ -1,12 +1,6 @@
 <?php
-/**
- * @copyright Copyright (c)  2019 Alignet  (https://www.pay-me.com)
- */
-
 namespace Alignet\Paymecheckout\Model;
-
-class Order
-{
+class Order {
 	/**
 	 * @var ResourceModel\Transaction
 	 */

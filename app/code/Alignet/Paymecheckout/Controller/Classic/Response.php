@@ -160,12 +160,14 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 		$connection->query($sql);
 		if ($authorizationResult == '00') {
 			$fechaHora = $res['txDateTime'];
-			$res['msgNumeroOP'] = 'Su transacción con número de pedido '.$res['purchaseOperationNumber'].' fue autorizada con éxito.';
-			$res['msgFecha'] = 'Este pedido fue generado el ' .$fechaHora .', en breve recibirá un correo a '.$res['shippingEmail'].' con la confirmación del pago el cual debe imprimir y/o guardar ';
-			$res['responseMSG'] = 'Transacción Autorizada';
-			$res['titleColor'] = 'success';
-			$o->setState(O::STATE_PROCESSING, true)->save();
-			$o->setStatus(O::STATE_PROCESSING, true)->save();
+			$res = [
+				'msgFecha' => 'Este pedido fue generado el ' .$fechaHora .', en breve recibirá un correo a '.$res['shippingEmail'].' con la confirmación del pago el cual debe imprimir y/o guardar '
+				,'msgNumeroOP' => 'Su transacción con número de pedido '.$res['purchaseOperationNumber'].' fue autorizada con éxito.'
+				,'responseMSG' => 'Transacción Autorizada'
+				,'titleColor' => 'success'
+			] + $res;
+			$o->setState(O::STATE_PROCESSING)->save();
+			$o->setStatus(O::STATE_PROCESSING)->save();
 			$o->addStatusToHistory($o->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 			$objectManager->create('Magento\Sales\Model\OrderNotifier')->notify($o);
@@ -176,8 +178,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$res['msgNumeroOP'] = 'Su transacción con número de pedido '.$res['purchaseOperationNumber'].' fue Denegada.  Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
 			$res['responseMSG'] = 'Transacción Denegada';
 			$res['titleColor'] = 'danger';
-			$o->setState(O::STATUS_REJECTED, true)->save();
-			$o->setStatus(O::STATUS_REJECTED, true)->save();
+			$o->setState(O::STATUS_REJECTED)->save();
+			$o->setStatus(O::STATUS_REJECTED)->save();
 			$o->addStatusToHistory($o->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$o->save();
 		}
@@ -187,8 +189,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$res['msgNumeroOP'] = 'Su transacción con número de pedido '.$res['purchaseOperationNumber'].' fue Cancelada. Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
 			$res['responseMSG'] = 'Transacción Cancelada';
 			$res['titleColor'] = 'danger';
-			$o->setState(O::STATE_CANCELED, true)->save();
-			$o->setStatus(O::STATE_CANCELED, true)->save();
+			$o->setState(O::STATE_CANCELED)->save();
+			$o->setStatus(O::STATE_CANCELED)->save();
 			$o->addStatusToHistory($o->getStatus(), 'El pedido ha sido Cancelado ');
 			$o->save();
 		}
@@ -207,8 +209,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$res['msgNumeroOP'] = 'Su transacción '.$res['purchaseOperationNumber'].' se encuentra pendiente de pago. Por favor acérquese a la agencia bancaria más cercana para realizar el pago con el siguiente código: <p class="pagoefectivo-cip">CIP: <b> '.$res['numeroCip'].'</b></p>';
 			$res['responseMSG'] = 'Transacción Pendiente';
 			$res['titleColor'] = 'success';
-			$o->setState(O::STATE_PENDING_PAYMENT, true)->save();
-			$o->setStatus(O::STATE_PENDING_PAYMENT, true)->save();
+			$o->setState(O::STATE_PENDING_PAYMENT)->save();
+			$o->setStatus(O::STATE_PENDING_PAYMENT)->save();
 			$o->addStatusToHistory($o->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$o->save();
 		}
@@ -217,8 +219,8 @@ class Response extends \Magento\Framework\App\Action\Action implements CsrfAware
 			$res['responseMSG'] = 'Incompleta';
 			$res['titleColor'] = 'danger';
 			$res['msgNumeroOP'] = 'Su transacción con número de pedido '.$res['purchaseOperationNumber'].' fue Incompleta. Tener presente que esta operación NO HA GENERADO NINGUN COBRO en su tarjeta.';
-			$o->setState(O::STATE_CANCELED, true)->save();
-			$o->setStatus(O::STATE_CANCELED, true)->save();
+			$o->setState(O::STATE_CANCELED)->save();
+			$o->setStatus(O::STATE_CANCELED)->save();
 			$o->addStatusToHistory($o->getStatus(), 'El pedido ha sido procesado Correctamente');
 			$o->save();
 		}

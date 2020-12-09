@@ -160,11 +160,16 @@ class Order implements \Alignet\Paymecheckout\Model\Client\OrderInterface
 		// TODO: Implement validateStatusUpdate() method.
 	}
 
+
 	/**
-	 * @inheritDoc
+	 * 2020-12-09
+	 * @override
+	 * @see \Alignet\Paymecheckout\Model\Client\OrderInterface::create()
+	 * @used-by \Alignet\Paymecheckout\Model\Client::orderCreate()
+	 * @param array $data
+	 * @return array
 	 */
-	function create(array $data)
-	{
+	function create(array $data) {
 		$this->session->setOrderCreateData($data);
 
 		return [

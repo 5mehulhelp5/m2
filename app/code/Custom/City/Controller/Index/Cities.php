@@ -19,5 +19,6 @@ class Cities extends City
 			}
 		}
 		echo json_encode($cities);
+		die();
     }
 }

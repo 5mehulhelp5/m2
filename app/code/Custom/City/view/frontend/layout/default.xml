@@ -5,7 +5,7 @@
 	</head>
 	 <body>
         <referenceContainer name="content">
-            <block class="Magento\Framework\View\Element\Template" name="city.block" template="Custom_City::city/city.phtml" after="checkout.root" cacheable="false" />
+            <block class="Magento\Framework\View\Element\Template" name="city.block" template="Custom_City::city/city.phtml" after="checkout.root" cacheable="true" />
         </referenceContainer>
     </body>
 </page>

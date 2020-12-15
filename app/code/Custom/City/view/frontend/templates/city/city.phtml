@@ -1,4 +1,4 @@
-<?php if($this->helper('Custom\City\Helper\Data')->getConfig('city/general/enabled')){?>
+<?php //if($this->helper('Custom\City\Helper\Data')->getConfig('city/general/enabled')){?>
     <?php $url = $this->getUrl('city/index/cities');
     $city_link = '';
     $city_title = 'City not in list';
@@ -13,28 +13,28 @@
     $curl = $this->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
     if(strpos($curl,'checkout')!==false){
         $page = 'checkout';
-    }else{
-        $page = 'edit';
-    }?>
+    }//else{
+        //$page = 'edit';
+    //}?>
     <script type="text/javascript">
         var data_city_link="<?php echo $city_link;?>";
         var data_city_title="<?php echo $city_title;?>";
         var data_url="<?php echo $url;?>";
         var loading_url = "<?php echo $this->getViewFileUrl('Custom_City::images/loader-1.gif');?>";
         var nearStoreUrl = '<?php echo $block->getUrl('storepickup/storeholiday/neareststores'); ?>';
-        <?php if($page=='checkout'){?>
+        <?php //if($page=='checkout'){?>
         require(["jquery","domReady!"], function($){
-            <?php if(strpos($curl,'cart')!==false){?>
-            if(jQuery('#shipping-zip-form').length==0){
-                console.log('inside cart page-->>');
-                setTimeout(function(){ shippingmainCityCart();}, 2000);
-            }
-            <?php }else{?>
+            <?php //if(strpos($curl,'cart')!==false){?>
+            // if(jQuery('#shipping-zip-form').length==0){
+            //     console.log('inside cart page-->>');
+            //     setTimeout(function(){ shippingmainCityCart();}, 2000);
+            // }
+            <?php //}else{?>
             setTimeout(function(){ shippingmainCityCall();}, 3000);
             if(jQuery("input[type='submit']").length==0){
                 setTimeout(function(){ checkSubmitButtonLoad();}, 1000);
             }
-            <?php }?>
+            <?php //}?>
         });
         function checkSubmitButtonLoad(){
             if(jQuery('.button').length==0){
@@ -44,12 +44,12 @@
                bilingmainCityCall();
             });
         }
-        <?php }else{?>
-        require(["jquery","domReady!"], function($){
-            setTimeout(function(){ addressPageCall();}, 2000);
-        });
-        <?php }?>
+        <?php //}else{?>
+        // require(["jquery","domReady!"], function($){
+        //     setTimeout(function(){ addressPageCall();}, 2000);
+        // });
+        <?php //}?>
     </script>
 
-<?php }?>
+<?php //}?>
 

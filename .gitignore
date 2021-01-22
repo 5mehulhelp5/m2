@@ -10,6 +10,7 @@
 !/readme.md
 !/app/code/**/*
 !/app/design/frontend/MageBig/**/*
+!/app/etc/config.php
 !/le_connector/**/*
 /update/
 # 2020-12-01 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro

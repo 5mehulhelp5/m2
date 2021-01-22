@@ -204,6 +204,7 @@
                                                                             <item name="target" xsi:type="string"><![CDATA[${ $.provider }:${ $.parentScope }.country_id]]></item>
                                                                             <item name="field" xsi:type="string">country_id</item>
                                                                         </item>
+                                                                        <item name="sortOrder" xsi:type="string">71</item>
                                                                     </item>
                                                                     <item name="postcode" xsi:type="array">
                                                                         <!-- post-code field has custom UI component -->

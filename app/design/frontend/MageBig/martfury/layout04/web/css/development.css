@@ -1,3 +1,10 @@
+div[name*="shippingAddress.postcode"] {
+  display: none
+}
+
+.mr-payment img {
+    max-width: 10% !important;
+}
 .content_wrapper h3 strong {
   color: #666666;
   font-size: 15px;

@@ -1,7 +1,7 @@
 <?php
 
 define('LECM_TOKEN', '64f88db75576d066c42eb9c6e0a8baea');
-define('CONNECTOR_VERSION', '1.0.2');
+define('CONNECTOR_VERSION', '1.0.7');
 
 class LECM_Connector
 {
@@ -65,7 +65,7 @@ class LECM_Connector
         }
     }
 
-    function log($msg, $log_type = 'exception')
+    public static function log($msg, $log_type = 'exception')
     {
         if(!self::$dev_mode){
             return false;
@@ -265,7 +265,19 @@ class LECM_Connector_Action_Check extends LECM_Connector_Action
             if(isset($cart->view)){
                 $obj['view'] = $cart->view;
             }
+            if(isset($cart->site_id) && $cart->site_id){
+                $obj['site_id'] = $cart->site_id;
+            }
             $dbConnect                 = LECM_Db::getInstance($cart);
+            if($dbConnect->getError()){
+                if($cart->getHostPort() != 'localhost'){
+                    $cart->setHostPort('localhost');
+                    $new_dbConnect                 = LECM_Db::getInstance($cart, true);
+                    if(!$new_dbConnect->getError()){
+                        $dbConnect = $new_dbConnect;
+                    }
+                }
+            }
             if ($dbConnect->getError()) {
                 $obj['connect'] = array(
                     'result' => 'error',
@@ -294,7 +306,15 @@ class LECM_Connector_Action_Phpinfo extends LECM_Connector_Action
     }
 
 }
+class LECM_Connector_Action_Opcache extends LECM_Connector_Action
+{
+    function run()
+    {
+        opcache_reset();
+        return;
+    }
 
+}
 class LECM_Connector_Action_Directory extends LECM_Connector_Action
 {
     function run()
@@ -954,6 +974,7 @@ class LECM_Connector_Action_Image extends LECM_Connector_Action
             }
         }
         imagecopyresampled($image_resize, $image, 0, 0, $cropWidth, $cropHeight, $final_width, $final_height, $src_width - 2 * $cropWidth, $src_height - 2 * $cropHeight);
+        $this->createParentDir($desc_image);
         switch ($imageInfo[2]) {
             case IMAGETYPE_GIF:
                 $result = imagegif($image_resize, $desc_image);
@@ -981,7 +1002,152 @@ class LECM_Connector_Action_Path extends LECM_Connector_Action{
         return;
     }
 }
+class LECM_Connector_Action_Adminer extends LECM_Connector_Action{
+    const URL_DOWNLOAD = 'https://github.com/vrana/adminer/releases/download/v4.7.7/adminer-4.7.7.php';
+    var $_file = null;
+    function run()
+    {
+        $file_name = md5('litextension' . LECM_TOKEN) . '.php';
+        $path = $this->getPathFileAdminer() . 'le_connector'. DIRECTORY_SEPARATOR .$file_name;
+        $full_path = $this->getRealPath($path);
+        if(file_exists($full_path)){
+            return $this->login();
+        }
+        $file   = $this->getActionFile();
+        $params = array(
+            'url' => self::URL_DOWNLOAD,
+            'override' => true,
+            'rename' => false
+        );
+        $result = $file->download($path, $params);
+        if($result && strpos($result, '[LECM_ERROR]') === false){
+            return $this->login();
+        }
+        echo $result;
+    }
+    function getPathFileAdminer(){
+        $special_uri = array('litextension-data-migration-to-woocommerce');
+        $cart_uri = '';
+        foreach ($special_uri as $uri){
+            if(stripos($_SERVER['REQUEST_URI'], $uri) !== false){
+                $cart_uri = $uri;
+                break;
+            }
+        }
+        $path = '';
+        if(MODULE_CONNECTOR){
+            switch ($cart_uri){
+                case 'litextension-data-migration-to-woocommerce':
+                    $path = 'wp-content' . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $cart_uri . DIRECTORY_SEPARATOR;
+                    break;
+                default:
+                    break;
 
+            }
+        }
+        return $path;
+    }
+    function getActionFile()
+    {
+        if (!$this->_file) {
+            $this->_file = new LECM_Connector_Action_File();
+        }
+        return $this->_file;
+    }
+    function styleAdminer(){
+        $file_name = md5('litextension' . LECM_TOKEN) . '.php';
+        $path = $this->getPathFileAdminer() . 'le_connector'. DIRECTORY_SEPARATOR .$file_name;
+        $full_path = $this->getRealPath($path);
+        if(@$_GET['type'] =='target'){
+            $connector_type = 'Target';
+            $background = '';
+        }else{
+            $connector_type = 'Source';
+            $background = 'background-color: red';
+        }
+        $adminer = file_get_contents($full_path);
+        $adminer = str_replace("{return\"<a href='https://www.adminer.org/'\".target_blank().\" id='h1'>Adminer</a>\";}", "{return\"<a href='https://www.adminer.org/'\".target_blank().\" id='h1'><span style='font-weight: bold; font-size: 40px'>$connector_type</span></a>\";}", $adminer);
+        $adminer = str_replace('<h2>$oi</h2>', '<h2 style=\''.$background.'\'>$oi</h2>', $adminer);
+
+        file_put_contents($full_path, $adminer);
+    }
+    function login(){
+        $this->styleAdminer();
+        $file_name = md5('litextension' . LECM_TOKEN) . '.php';
+        $cart     = $this->getCart();
+        echo '<form name="fr" action="'.$file_name.'" method=POST>
+        <input type="hidden" name=auth[username] value="'.$cart->username.'">
+        <input type="hidden" name=auth[driver] value="server">
+        <input type="hidden" name=auth[password] value="'.$cart->password.'">
+        <input type="hidden" name=auth[db] value="'.$cart->database.'">
+        <input type="hidden" name=auth[server] value="'.$cart->host.'">
+        <input type="hidden" name=auth[permanent] value="1">
+        </form>
+        <script type="text/javascript">
+            document.fr.submit();
+        </script>';
+    }
+}
+class LECM_Connector_Action_Remove_Adminer extends LECM_Connector_Action_Adminer {
+    var $_file = null;
+    function run()
+    {
+        $file_name = md5('litextension' . LECM_TOKEN) . '.php';
+        $path = $this->getPathFileAdminer() . 'le_connector'. DIRECTORY_SEPARATOR .$file_name;
+        $full_path = $this->getRealPath($path);
+        $res = 'success';
+        if(file_exists($full_path)){
+            if(!@unlink($full_path)){
+                $res = 'fail';
+            }
+        }
+        echo $res;
+    }
+    function getPathFileAdminer(){
+        $special_uri = array('litextension-data-migration-to-woocommerce');
+        $cart_uri = '';
+        foreach ($special_uri as $uri){
+            if(stripos($_SERVER['REQUEST_URI'], $uri) !== false){
+                $cart_uri = $uri;
+                break;
+            }
+        }
+        $path = '';
+        if(MODULE_CONNECTOR){
+            switch ($cart_uri){
+                case 'litextension-data-migration-to-woocommerce':
+                    $path = 'wp-content' . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $cart_uri . DIRECTORY_SEPARATOR;
+                    break;
+                default:
+                    break;
+
+            }
+        }
+        return $path;
+    }
+    function getActionFile()
+    {
+        if (!$this->_file) {
+            $this->_file = new LECM_Connector_Action_File();
+        }
+        return $this->_file;
+    }
+    function login(){
+        $file_name = md5('litextension' . LECM_TOKEN) . '.php';
+        $cart     = $this->getCart();
+        echo '<form name="fr" action="'.$file_name.'" method=POST>
+        <input type="hidden" name=auth[username] value="'.$cart->username.'">
+        <input type="hidden" name=auth[driver] value="server">
+        <input type="hidden" name=auth[password] value="'.$cart->password.'">
+        <input type="hidden" name=auth[db] value="'.$cart->database.'">
+        <input type="hidden" name=auth[server] value="'.$cart->host.'">
+        <input type="hidden" name=auth[permanent] value="1">
+        </form>
+        <script type="text/javascript">
+            document.fr.submit();
+        </script>';
+    }
+}
 class LECM_Connector_Action_Execute extends LECM_Connector_Action
 {
     function run(){
@@ -1086,6 +1252,9 @@ class LECM_Connector_Action_Query extends LECM_Connector_Action
             $dbConnect = LECM_Db::getInstance($cart);
             if (isset($_REQUEST['query']) && !$dbConnect->getError()) {
                 $queries = @json_decode($this->request_decode($_REQUEST['query']), true);
+                if($queries !== false){
+                    $dbConnect->processQuery('query', "SET SESSION SQL_MODE = ''");
+                }
                 if (isset($_REQUEST['serialize']) && $_REQUEST['serialize'] && $queries !== false) {
                     foreach ($queries as $key => $query) {
                         if (is_array($query) && isset($query['type'])) {
@@ -1225,8 +1394,11 @@ abstract class LECM_Db
         }
     }
 
-    static function getInstance($cart)
+    static function getInstance($cart, $new = false)
     {
+        if($new){
+            self::$instance = null;
+        }
         if (!self::$instance) {
             $class          = LECM_Db::getClass();
             self::$servers  = array('server' => $cart->host, 'user' => $cart->username, 'password' => $cart->password, 'database' => $cart->database, 'charset' => @$cart->charset);
@@ -1245,7 +1417,7 @@ abstract class LECM_Db
     {
         if (function_exists('mysql_connect')) {
             $class = 'LECM_MySQL';
-        } elseif (class_exists('PDO')) {
+        } elseif (class_exists('PDO') && extension_loaded('pdo_mysql')) {
             $class = 'LECM_Pdo';
         } else {
             $class = 'LECM_MySQLi';
@@ -1455,6 +1627,12 @@ class LECM_Pdo extends LECM_Db
         while ($retry) {
             try {
                 $this->link = new PDO($dsn,$this->user,$this->password, null);
+                if ($this->charset) {
+                    $charset = $this->charset;
+                } else {
+                    $charset = "utf8";
+                }
+                $this->link->exec('SET NAMES ' . $charset);
                 $this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 if (!empty($_REQUEST['disable_checks'])) {
                     $this->link->exec('SET SESSION FOREIGN_KEY_CHECKS=0, SESSION SQL_MODE="NO_AUTO_VALUE_ON_ZERO"');
@@ -1491,7 +1669,7 @@ class LECM_Pdo extends LECM_Db
             $res = $this->link->query($sql);
         }catch (PDOException $e){
             $response['msg'] = $e->getMessage();
-            LECM_Connector::log($sql . ": " . $this->link->error, 'pdo');
+            LECM_Connector::log($sql . ": " . $e->getMessage(), 'pdo');
             $this->error = $e->getMessage();
             $res = false;
         }
@@ -1547,6 +1725,32 @@ class LECM_Connector_Adapter
         return $this->type;
     }
 
+    public static function detectRootFolder(){
+        $special_uri = array('litextension-data-migration-to-woocommerce');
+        $module_connector = false;
+        $cart_uri = '';
+        foreach ($special_uri as $uri){
+            if(stripos($_SERVER['REQUEST_URI'], $uri) !== false){
+                $module_connector = true;
+                $cart_uri = $uri;
+                break;
+            }
+        }
+        define('MODULE_CONNECTOR', $module_connector);
+        if($module_connector){
+            switch ($cart_uri){
+                case 'litextension-data-migration-to-woocommerce':
+                    define('LECM_STORE_BASE_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR. '..' . DIRECTORY_SEPARATOR. '..' . DIRECTORY_SEPARATOR. '..' . DIRECTORY_SEPARATOR);
+                    break;
+                default:
+                    define('LECM_STORE_BASE_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
+
+            }
+        }else{
+            define('LECM_STORE_BASE_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
+        }
+    }
+
     function getCart($check = false)
     {
         $cart = null;
@@ -1558,19 +1762,20 @@ class LECM_Connector_Adapter
         elseif(@$_REQUEST['cart_type']){
             $cart_type = $_REQUEST['cart_type'];
         }
-
-        $cart = $this->getCartType($cart_type, $check);
-        if($cart){
-            $this->cart = $cart;
-            if($cart_type == 'custom'){
-                $db_custom = @require LECM_STORE_BASE_DIR . 'le_connector/db_custom.php';
-                $this->type = $db_custom['cart_type'];
-            }else{
-                $this->type = $cart_type;
-            }
-            return $cart;
-        }
         $list_cart_type  = $this->detectCartType();
+        if($list_cart_type && in_array($cart_type, $list_cart_type)){
+            $cart = $this->getCartType($cart_type, $check);
+            if($cart){
+                $this->cart = $cart;
+                if($cart_type == 'custom'){
+                    $db_custom = @require LECM_STORE_BASE_DIR . 'le_connector/db_custom.php';
+                    $this->type = $db_custom['cart_type'];
+                }else{
+                    $this->type = $cart_type;
+                }
+                return $cart;
+            }
+        }
         foreach ($list_cart_type as $cart_type){
             $cart = $this->getCartType($cart_type, $check);
             if($cart){
@@ -1613,7 +1818,22 @@ class LECM_Connector_Adapter
         {
             $db_custom = @require LECM_STORE_BASE_DIR . 'le_connector/db_custom.php';
             $list_cart[] = $db_custom['cart_type'];
+            $list_cart[] = 'custom';
         }
+        //Gambio
+        if (@file_exists(LECM_STORE_BASE_DIR . 'includes' . DIRECTORY_SEPARATOR . 'configure.php')
+            && @file_exists(LECM_STORE_BASE_DIR . 'gm' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'GMCat.php')
+        ) {
+            $list_cart[] = 'gambio';
+        }
+
+        //Shopware
+        if ((@file_exists(LECM_STORE_BASE_DIR . '.env') || @file_exists(LECM_STORE_BASE_DIR . '../.env'))
+            || (@file_exists(LECM_STORE_BASE_DIR . 'config.php') && @file_exists(LECM_STORE_BASE_DIR . 'engine/Shopware/'))
+        ) {
+            $list_cart[] = 'shopware';
+        }
+
         //Squirrelcart
         if (@file_exists(LECM_STORE_BASE_DIR . 'squirrelcart/config.php')) {
             $list_cart[] = 'squirrelcart';
@@ -1659,8 +1879,14 @@ class LECM_Connector_Adapter
             $list_cart[] = 'mijoshop';
         }
 
+        //joomshopping
+        if ((file_exists(LECM_STORE_BASE_DIR . 'configuration.php')) && (file_exists(LECM_STORE_BASE_DIR . 'jshopping.xml'))
+        ) {
+            $list_cart[] = 'joomshopping';
+        }
+
         // WordPress
-        if (file_exists(LECM_STORE_BASE_DIR . 'wp-config.php')) {
+        if (file_exists(LECM_STORE_BASE_DIR . 'wp-config.php') || file_exists(LECM_STORE_BASE_DIR . '../wp-config.php')) {
             // WooCommerce
             $wooCommerceDir = glob(LECM_STORE_BASE_DIR . 'wp-content/plugins/woocommerce*', GLOB_ONLYDIR);
             if (is_array($wooCommerceDir) && count($wooCommerceDir) > 0) {
@@ -1791,6 +2017,10 @@ class LECM_Connector_Adapter
         $this->host = $source;
     }
 
+    function getHostPort(){
+        return $this->host;
+    }
+
     function getCartVersionFromDb($field, $tableName, $where)
     {
         $version = '';
@@ -1815,6 +2045,91 @@ class LECM_Connector_Adapter
         );
     }
 }
+
+class LECM_Connector_Adapter_Gambio extends LECM_Connector_Adapter
+{
+    public function __construct()
+    {
+        include(LECM_STORE_BASE_DIR . '/includes/configure.php');
+
+        $this->setHostPort(DB_SERVER);
+        $this->database   = DB_DATABASE;
+        $this->username = DB_SERVER_USERNAME;
+        $this->password = DB_SERVER_PASSWORD;
+
+        if($this->check){
+            $this->imageDir = DIR_WS_IMAGES;
+            $this->imageDirCategory    = $this->imagesDir;
+            $this->imageDirProduct      = DIR_WS_POPUP_IMAGES;
+            $this->imageDirManufacturer = $this->imagesDir;
+        }
+    }
+}
+
+class LECM_Connector_Adapter_Shopware extends LECM_Connector_Adapter
+{
+    public function setEnv()
+    {
+        if (@file_exists(LECM_STORE_BASE_DIR .  '.env') || @file_exists(LECM_STORE_BASE_DIR .  '../.env')) {
+            $base_dir = '';
+            if (@file_exists(LECM_STORE_BASE_DIR .  '.env')) {
+                $config = @file_get_contents(LECM_STORE_BASE_DIR . '.env');
+                $base_dir = 'public';
+            } else {
+                $config = @file_get_contents(LECM_STORE_BASE_DIR . '../.env');
+            }
+            preg_match('/DATABASE_URL\=mysql\:\/\/.*?\n/', $config, $configMatch);
+            $str_config = str_replace('DATABASE_URL=mysql://', '', trim($configMatch[0]));
+
+            preg_match("/\/(.*)$/", $str_config, $match);
+            $this->database = $match[1];
+            preg_match("/^(.*?)\:/", $str_config, $match);
+            $this->username = $match[1];
+            preg_match("/\:(.*?)\@/", $str_config, $match);
+            $this->password = urldecode((string)@$match[1]);
+            preg_match("/\@(.*?)\:(.*?)\//", $str_config, $match);
+            $host = $match[1];
+            $this->setHostPort($host . ':' . @$match[2]);
+            if($this->check){
+                $this->imageDir = $base_dir . '/media/';
+                $this->imageDirCategory = $this->imageDir;
+                $this->imageDirProduct = $this->imageDir;
+                $this->imageDirManufacturer = $this->imageDir;
+                $this->version = '6.0.0';
+            }
+
+        } elseif (@file_exists(LECM_STORE_BASE_DIR .  'config.php')) {
+            $config = @require LECM_STORE_BASE_DIR . 'config.php';
+            $this->database = @$config['db']['dbname'];
+            $this->username = @$config['db']['username'];
+            $this->password = @$config['db']['password'];
+            $host = @$config['db']['host'];
+            if(@$config['db']['port'] && @$config['db']['port'] != 3306){
+                $host .= ':' . $config['db']['port'];
+            }
+            $this->setHostPort($host);
+            if($this->check){
+
+                if ($applicationphp = @file_get_contents(LECM_STORE_BASE_DIR . 'engine/Shopware/Application.php')) {
+                    preg_match("/(const VERSION\s+= ')(.+)(';)/", $applicationphp, $match);
+                    $version = $match[2];
+                    if ($version != '') {
+                        $this->version = $version;
+                    }
+                }
+                $this->imageDir = 'media/image/';
+                $this->imageDirCategory = $this->imagesDir;
+                $this->imageDirProduct = $this->imagesDir;
+                $this->imageDirManufacturer = $this->imagesDir;
+                $this->tablePrefix = 's_';
+
+            }
+
+        }
+
+    }
+}
+
 class LECM_Connector_Adapter_Randshop extends LECM_Connector_Adapter
 {
     function setEnv()
@@ -2042,9 +2357,15 @@ class LECM_Connector_Adapter_Squirrelcart extends LECM_Connector_Adapter
 
 class LECM_Connector_Adapter_Woocommerce extends LECM_Connector_Adapter
 {
+    var $site_id = null;
     function setEnv()
     {
-        $config = file_get_contents(LECM_STORE_BASE_DIR . 'wp-config.php');
+        if(file_exists(LECM_STORE_BASE_DIR . 'wp-config.php')){
+            $config = file_get_contents(LECM_STORE_BASE_DIR . 'wp-config.php');
+        }else{
+            $config = file_get_contents(LECM_STORE_BASE_DIR . '../wp-config.php');
+
+        }
 
         preg_match('/^\s*define\s*\(\s*\'DB_NAME\',\s*(\'|\")(.+)(\'|\")\s*\)\s*;/m', $config, $match);
         $this->database = $match[2];
@@ -2062,23 +2383,24 @@ class LECM_Connector_Adapter_Woocommerce extends LECM_Connector_Adapter
             preg_match('/^\s*\$table_prefix\s*=\s*(\'|\")(.*)(\'|\")\s*;/m', $config, $match);
             $this->tablePrefix          = $match[2];
             preg_match('/^\s*define\s*\(\s*\'MULTISITE\',\s*(\'|\"|)(.+)(\'|\"|)\s*\)\s*;/m', $config, $match);
-            if($match && $match[2] == 'true'){
-                preg_match('/^\s*define\s*\(\s*\'WP_ALLOW_MULTISITE\',\s*(\'|\"|)(.+)(\'|\"|)\s*\)\s*;/m', $config, $match);
-
-                if(@$match[2] == 'true'){
-                    if($site_id = $this->getSiteId()){
-                        $this->tablePrefix.= $site_id.'_';
-                    }
+            if($match && (trim($match[2], ' ') == 'true' || $match[2] === true)){
+                if($site_id = $this->getSiteId()){
+                    $this->tablePrefix.= $site_id.'_';
+                    $this->site_id = $site_id;
                 }
             }
-            $upload_path = $this->getUploadPathFromDb();
-            if($upload_path){
-                $cwd = str_replace('/le_connector', '',getcwd());
-                $this->imageDir             = str_replace($cwd, '',$upload_path);
-            }else{
-                $this->imageDir             = 'wp-content/uploads/';
+//            $upload_path = $this->getUploadPathFromDb();
+//            if($upload_path){
+//                $cwd = str_replace('/le_connector', '',getcwd());
+//                $this->imageDir             = str_replace($cwd, '',$upload_path);
+//            }else{
+            $this->imageDir             = 'wp-content/uploads/';
+            if(!is_dir(LECM_STORE_BASE_DIR . 'wp-content') && is_dir(LECM_STORE_BASE_DIR . 'content')){
+                $this->imageDir             = 'content/uploads/';
+
             }
-            $this->password = $match[1];
+//            }
+
             $this->imageDirCategory     = $this->imageDir;
             $this->imageDirProduct      = $this->imageDir;
             $this->imageDirManufacturer = $this->imageDir;
@@ -2097,16 +2419,22 @@ class LECM_Connector_Adapter_Woocommerce extends LECM_Connector_Adapter
         if (!$dbConnect->getError()) {
             $result = $dbConnect->select($sql);
             if ($result && $result['data']) {
-                $site_path = trim(str_replace(basename(dirname($_SERVER["SCRIPT_URL"])), '', dirname($_SERVER["SCRIPT_URL"])), '/ ');
+                $folder = 'le_connector';
+                if(MODULE_CONNECTOR){
+                    $folder = 'wp-content';
+                }
+                $find = explode($folder, dirname($_SERVER["REQUEST_URI"]));
+                $site_path = trim($find[0], '/');
                 foreach ($result['data'] as $row){
                     $path = trim($row['path'], '/ ');
                     if($site_path == $path){
                         $blog_id = $row['blog_id'];
-                        $sql_post = 'SELECT * FROM ' . $this->tablePrefix.$blog_id . '_blogs LIMIT 1';
+                        $sql_post = 'SELECT * FROM ' . $this->tablePrefix.$blog_id . '_posts LIMIT 1';
                         $post = $dbConnect->select($sql_post);
                         if($post && $post['data']){
                             return $blog_id;
                         }
+                        $dbConnect->error = null;
                         return false;
                     }
                 }
@@ -2149,7 +2477,51 @@ class LECM_Connector_Adapter_Woocommerce extends LECM_Connector_Adapter
         );
     }
 }
+class LECM_Connector_Adapter_JoomShopping extends LECM_Connector_Adapter
+{
+    function setEnv()
+    {
 
+        @require_once LECM_STORE_BASE_DIR . '/configuration.php';
+        $config = null;
+        if (class_exists('JConfig')) {
+
+            $config = new JConfig();
+
+            $this->setHostPort($config->host);
+            $this->database   = $config->db;
+            $this->username = $config->user;
+            $this->password = $config->password;
+
+        } else {
+
+            $this->setHostPort($mosConfig_host);
+            $this->database   = $mosConfig_db;
+            $this->username = $mosConfig_user;
+            $this->password = $mosConfig_password;
+        }
+        if ($this->check) {
+            if (@file_exists(LECM_STORE_BASE_DIR . 'components/com_jshopping/lib/functions.php')) {
+                $data = file_get_contents(LECM_STORE_BASE_DIR . 'components/com_jshopping/lib/functions.php');
+                if (preg_match('/\@version\s+(.+)\s+.+/', $data, $match) != 0) {
+                    $version = explode(' ',$match[1]);
+                    $this->version = $version[0];
+                    unset($match);
+                }
+            }
+
+            $this->imageDir = 'components/com_jshopping/files';
+            $this->imageDirCategory    = $this->imageDir . '/img_categories/';
+            $this->imageDirProduct      = $this->imageDir . '/img_products/';
+            $this->imageDirManufacturer = $this->imageDir . '/img_manufs/';
+            if($config){
+                $this->tablePrefix = $config->dbprefix;
+            }
+
+        }
+
+    }
+}
 class LECM_Connector_Adapter_Jigoshop extends LECM_Connector_Adapter
 {
 
@@ -2251,6 +2623,19 @@ class LECM_Connector_Adapter_Prestashop extends LECM_Connector_Adapter
             }
         }
     }
+    function clearCache(){
+        if (file_exists(LECM_STORE_BASE_DIR   . 'config' . DIRECTORY_SEPARATOR . 'config.inc.php') && file_exists(LECM_STORE_BASE_DIR . 'classes' . DIRECTORY_SEPARATOR . 'Category.php')) {
+            require(LECM_STORE_BASE_DIR.'config/config.inc.php');
+            require_once LECM_STORE_BASE_DIR.'classes/Category.php';
+            if(class_exists('CategoryCore') && method_exists('CategoryCore', 'regenerateEntireNtree')){
+                CategoryCore::regenerateEntireNtree();
+            }
+
+        }
+        return array(
+            'result' => 'success',
+        );
+    }
 }
 
 class LECM_Connector_Adapter_Magento extends LECM_Connector_Adapter
@@ -2294,9 +2679,17 @@ class LECM_Connector_Adapter_Magento extends LECM_Connector_Adapter
             $config = @include($baseDir . 'app' . DIRECTORY_SEPARATOR . 'etc' . DIRECTORY_SEPARATOR . 'env.php');
             $db_config = array();
             foreach ($config['db']['connection'] as $connection) {
-                if ($connection['active'] == 1) {
+                if (@$connection['active'] == 1) {
                     $db_config = $connection;
                     break;
+                }
+            }
+            if(!$db_config){
+                foreach ($config['db']['connection'] as $key => $connection) {
+                    if ($key == 'default') {
+                        $db_config = $connection;
+                        break;
+                    }
                 }
             }
             $this->setHostPort(isset($db_config['host'])?$db_config['host']:'');
@@ -2308,6 +2701,7 @@ class LECM_Connector_Adapter_Magento extends LECM_Connector_Adapter
                 $this->charset = str_replace(';', '', $this->charset);
             }
             if ($this->check) {
+                $this->version = '2.2.0'; //default
                 $this->view=$this->checkViewExist();
                 $this->tablePrefix          = isset($config['db']['table_prefix'])?$config['db']['table_prefix']:'';
                 $this->imageDir             = $imagesDir;
@@ -2316,10 +2710,9 @@ class LECM_Connector_Adapter_Magento extends LECM_Connector_Adapter
                 $this->imageDirManufacturer = $this->imageDir;
                 if (file_exists($baseDir . 'composer.json')) {
                     $ver = file_get_contents($baseDir . 'composer.json');
-                    if (preg_match("/\"version\": \"(.*)\",/", $ver, $match) == 1) {
-                        // $mageVersion = $match[1] . '.' . $match[2] . '.' . $match[3] . '.' . $match[4];
-                        $this->version = $match[1];
-                        unset($match);
+                    if (preg_match("/\"version\"\:[ ]*?\"([0-9\.]*)\"\,/", $ver, $match) == 1) {
+                        $mageVersion = $match[1];
+                        $this->version = $mageVersion;
                     }
                 }
             }
@@ -2554,14 +2947,18 @@ class LECM_Connector_Adapter_Wpecommerce extends LECM_Connector_Adapter
     function setEnv()
     {
         $config = file_get_contents(LECM_STORE_BASE_DIR . 'wp-config.php');
-        preg_match("/define\(\'DB_NAME\', \'(.+)\'\);/", $config, $match);
-        $this->database = $match[1];
-        preg_match("/define\(\'DB_USER\', \'(.+)\'\);/", $config, $match);
-        $this->username = $match[1];
-        preg_match("/define\(\'DB_PASSWORD\', \'(.*)\'\);/", $config, $match);
-        $this->password = $match[1];
-        preg_match("/define\(\'DB_HOST\', \'(.+)\'\);/", $config, $match);
-        $this->setHostPort($match[1]);
+        preg_match('/^\s*define\s*\(\s*\'DB_NAME\',\s*(\'|\")(.+)(\'|\")\s*\)\s*;/m', $config, $match);
+        $this->database = $match[2];
+        preg_match('/^\s*define\s*\(\s*\'DB_USER\',\s*(\'|\")(.+)(\'|\")\s*\)\s*;/m', $config, $match);
+        $this->username = $match[2];
+        preg_match('/^\s*define\s*\(\s*\'DB_PASSWORD\',\s*(\'|\")(.*)(\'|\")\s*\)\s*;/m', $config, $match);
+        $this->password = $match[2];
+        preg_match('/^\s*define\s*\(\s*\'DB_HOST\',\s*(\'|\")(.+)(\'|\")\s*\)\s*;/m', $config, $match);
+        $this->setHostPort($match[2]);
+        preg_match('/^\s*define\s*\(\s*\'DB_CHARSET\',\s*(\'|\")(.+)(\'|\")\s*\)\s*;/m', $config, $match);
+        if(@$match[2]){
+            $this->charset = $match[2];
+        }
         if ($this->check) {
             preg_match("/(table_prefix)(.*)(')(.*)(')(.*)/", $config, $match);
             $this->tablePrefix = $match[4];
@@ -2733,16 +3130,15 @@ class LECM_Connector_Adapter_Oxideshop extends LECM_Connector_Adapter
 
     function setEnv()
     {
-
         $config = file_get_contents(LECM_STORE_BASE_DIR . 'config.inc.php');
-        preg_match("/this->dbHost = '(.*)'/", $config, $match);
-        $this->setHostPort($match[1]);
-        preg_match("/this->dbName = '(.*)'/", $config, $match);
-        $this->database = $match[1];
-        preg_match("/this->dbUser = '(.*)'/", $config, $match);
-        $this->username = $match[1];
-        preg_match("/this->dbPwd = '(.*)'/", $config, $match);
-        $this->password = $match[1];
+        preg_match("/dbHost(.+)?=(.+)?\'(.*)\';/", $config, $match);
+        $this->setHostPort($match[3]);
+        preg_match("/dbUser(.+)?=(.+)?\'(.+)\';/", $config, $match);
+        $this->username = $match[3];
+        preg_match("/dbPwd(.+)?=(.+)?\'(.+)\';/", $config, $match);
+        $this->password = isset($match[3]) ? $match[3] : '';
+        preg_match("/dbName(.+)?=(.+)?\'(.+)\';/", $config, $match);
+        $this->database = $match[3];
         if ($this->check) {
             $this->version = $this->getCartVersionFromDb('OXVERSION', 'oxshops', "OXACTIVE = 1");
             if (file_exists(LECM_STORE_BASE_DIR . 'bootstrap.php')) {
@@ -2769,29 +3165,56 @@ class LECM_Connector_Adapter_Cscart extends LECM_Connector_Adapter
 {
     function setEnv()
     {
-        $config = file_get_contents(LECM_STORE_BASE_DIR . '/config.local.php');
-        preg_match("/config\[\'db_host\'\].+\'(.+)\';/", $config, $match);
-        $this->setHostPort($match[1]);
-        preg_match("/config\[\'db_user\'\].+\'(.+)\';/", $config, $match);
-        $this->username = $match[1];
-        preg_match("/config\[\'db_password\'\].+\'(.*)\';/", $config, $match);
-        $this->password = $match[1];
-        preg_match("/config\[\'db_name\'\].+\'(.+)\';/", $config, $match);
-        $this->database = $match[1];
+        defined('IN_CSCART') || define('IN_CSCART', 1);
+        defined('CSCART_DIR') || define('CSCART_DIR', LECM_STORE_BASE_DIR);
+        defined('AREA') || define('AREA', 1);
+        defined('BOOTSTRAP') || define('BOOTSTRAP', 1);
+        defined('DIR_ROOT') || define('DIR_ROOT', LECM_STORE_BASE_DIR);
+        defined('DIR_CSCART') || define('DIR_CSCART', LECM_STORE_BASE_DIR);
+        defined('DS') || define('DS', DIRECTORY_SEPARATOR);
+        if (@file_exists(LECM_STORE_BASE_DIR . 'config.local')) {
+            require LECM_STORE_BASE_DIR . 'config.local';
+        }
+        if (@file_exists(LECM_STORE_BASE_DIR . 'config.local.php')) {
+            require_once LECM_STORE_BASE_DIR . 'config.local.php';
+        }
+
+        //For CS CART 1.3.x
+        if (isset($db_host, $db_name, $db_user, $db_password)) {
+            $this->setHostPort($db_host);
+            $this->database = $db_name;
+            $this->username = $db_user;
+            $this->password = $db_password;
+        } else {
+            $this->setHostPort($config['db_host']);
+            $this->database = $config['db_name'];
+            $this->username = $config['db_user'];
+            $this->password = $config['db_password'];
+        }
+
+
         if ($this->check) {
-            preg_match("/config\[\'table_prefix\'\].+\'(.+)\';/", $config, $match);
-            if ($match) {
-                $this->tablePrefix = $match[1];
+
+            if (isset($images_storage_dir)) {
+                $imagesDir = $images_storage_dir;
+            } elseif (defined('DIR_IMAGES')) {
+                $imagesDir = DIR_IMAGES;
             } else {
-                $this->tablePrefix = 'cscart_';
+                $imagesDir = $config['storage']['images']['dir'] . '/' . $config['storage']['images']['prefix'];
             }
-            $this->imageDir             = '/images/';
-            $this->imageDirCategory     = $this->imageDir;
+
+            $this->imageDir = str_replace(LECM_STORE_BASE_DIR, '', $imagesDir);
+
+            $this->imageDirCategory    = $this->imageDir;
             $this->imageDirProduct      = $this->imageDir;
             $this->imageDirManufacturer = $this->imageDir;
-            $config_local               = file_get_contents(LECM_STORE_BASE_DIR . '/config.php');
-            preg_match("/define\(\'PRODUCT_VERSION\', \'(.+)\'\);/", $config_local, $match);
-            $this->version = $match[1];
+
+            $this->tablePrefix = @$config['table_prefix']?$config['table_prefix']:"";
+
+            if (defined('PRODUCT_VERSION')) {
+                $this->version = PRODUCT_VERSION;
+            }
+
         }
     }
 }
@@ -2922,7 +3345,7 @@ class LECM_Connector_Adapter_Ubercart extends LECM_Connector_Adapter
 
             $this->setHostPort($_database['host']);
 
-            $this->user = $_database['username'];
+            $this->username = $_database['username'];
 
             $this->password = $_database['password'];
 
@@ -3098,10 +3521,17 @@ if (!isset($_SERVER)) {
     $_COOKIE  = &$HTTP_COOKIE_VARS;
     $_REQUEST = array_merge($_GET, $_POST, $_COOKIE);
 }
-
+foreach ($_SERVER as $name => $value)
+{
+    if (strtolower(substr($name, 0, 9)) == 'http_lecm')
+    {
+        $_REQUEST[strtolower(substr($name, 9))] = $value;
+    }
+}
 define('LECM_ROOT_BASE_NAME', basename(getcwd()));
 define('LECM_CONNECTOR_BASE_DIR', dirname(__FILE__));
-define('LECM_STORE_BASE_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
-ini_set('display_errors', 1);
+LECM_Connector_Adapter::detectRootFolder();
+@ini_set('display_errors', 1);
+@ini_set('memory_limit', -1);
 $connector = new LECM_Connector();
 $connector->run();

@@ -15,11 +15,8 @@ final class SidResolver {
 	 * @return string
 	 */
 	function aroundGetSid(Sb $sb, \Closure $f, ISessionManager $m) {return
-		!df_contains(df_request_o()->getPathInfo(), 'paymecheckout/classic/response')
-			? $f($m)
-			: df_request(self::P_SESSION)
-		;
-	}
+		!df_rp_has('paymecheckout/classic/response') ? $f($m) : df_request(self::P_SESSION)
+	;}
 
 	/**
 	 * 2020-12-09

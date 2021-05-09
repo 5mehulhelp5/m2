@@ -1,0 +1,117 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Barcode
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+?>
+
+<?php
+/** @var Mageplaza\Barcode\Block\Adminhtml\System\Config\Button\ActionButton $block */
+$buttonLabel = $block->escapeHtml($block->getButtonLabel());
+$buttonUrl = $block->escapeUrl($block->getButtonUrl());
+?>
+
+<style>
+    .mp-barcode-btn {
+        width: 100% !important;
+        padding: 0.6rem 0 !important;
+    }
+</style>
+
+<div class="pp-buttons-container">
+    <button type="button"
+            class="action-default mp-barcode-btn <?= /* @noEscape */ $block->getButtonType() ?>"
+            <?php if ($block->getButtonType() === 'basic') : ?>
+                onclick="location.href='<?= /* @noEscape */ $buttonUrl ?>'"
+            <?php endif; ?>
+            id="<?= $block->getHtmlId() ?>">
+        <?= /* @noEscape */ $buttonLabel ?>
+    </button>
+</div>
+
+<?php if ($block->getButtonType() === 'basic') : ?>
+<div>
+    <input id="mpbarcode_general_regenerate_barcode"
+           name="groups[general][fields][btn_generate][value][regenerate]"
+           <?= $block->isRegenerate() ? 'checked' : ''?>
+           type="checkbox" class="checkbox" value="0">
+    <label for="mpbarcode_general_regenerate_barcode"><?= /* @noEscape */ __('Replace all barcode value.') ?></label>
+    <input id="mpbarcode_general_regenerate_barcode_dummy"
+           name="groups[general][fields][btn_generate][value][dummy]"
+           type="hidden" value="1">
+</div>
+
+<?php endif; ?>
+
+<?php if ($buttonLabel === 'Load Template') : ?>
+    <script type="text/x-magento-init">
+        {
+            "#mpbarcode_barcode_paper_btn_load": {
+                "Mageplaza_Barcode/js/button/load": {
+                    "ajaxUrl": "<?= /* @noEscape */ $block->getButtonUrl() ?>"
+                }
+            }
+        }
+    </script>
+<?php endif; ?>
+
+<?php if ($buttonLabel === 'Preview Barcode Label') : ?>
+
+    <style>
+        #mpbarcode_barcode_label_css {
+            height: 450px !important;
+        }
+        #mpbarcode_barcode_label_content {
+            height: 350px !important;
+        }
+    </style>
+    <script type="text/x-magento-init">
+        {
+            "#mpbarcode_barcode_label_btn_preview_label": {
+                "Mageplaza_Barcode/js/button/preview/label": {
+                    "ajaxUrl": "<?= /* @noEscape */ $block->getButtonUrl() ?>",
+                    "loadUrl": "<?= /* @noEscape */ $block->getUrl('mpbarcode/barcode/loadtemplate') ?>"
+                }
+            }
+        }
+    </script>
+<?php endif; ?>
+
+<?php if ($buttonLabel === 'Preview Paper Template') : ?>
+    <script type="text/x-magento-init">
+        {
+            "#mpbarcode_barcode_paper_btn_preview_paper": {
+                "Mageplaza_Barcode/js/button/preview/paper": {
+                    "ajaxUrl": "<?= /* @noEscape */ $block->getButtonUrl() ?>"
+                }
+            }
+        }
+    </script>
+<?php endif; ?>
+
+<?php if ($buttonLabel === 'Print Sample') : ?>
+    <script type="text/x-magento-init">
+        {
+            "#mpbarcode_print_btn_print_sample": {
+                "Mageplaza_Barcode/js/button/print": {
+                    "ajaxUrl": "<?= /* @noEscape */ $block->getButtonUrl() ?>"
+                }
+            }
+        }
+    </script>
+<?php endif; ?>

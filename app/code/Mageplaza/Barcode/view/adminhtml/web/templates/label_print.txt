@@ -1,0 +1,15 @@
+.paper-label-wrapper, .paper-label {
+    width: {{width}}mm;
+}
+
+.paper-label{
+    height: {{height}}mm;
+    padding: {{padding}}mm;
+}
+.paper-label-wrapper {
+    float: left;
+    height: {{vertical_pitch}}mm;
+    margin-left: {{horizontal}}mm;
+}
+
+{{customCss}}

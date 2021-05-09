@@ -1,0 +1,32 @@
+/* ol160-qrCode */
+.left{
+    width: 60%;
+}
+
+.right{
+    width: 30%;
+    text-align: right;
+}
+
+.left, .right {
+    margin-top: 1px;
+    float: left;
+}
+
+.barcode-wrapper, .product-name, .barcode-number, .product-price {
+    text-align: center;
+    font-weight: bold;
+}
+
+.barcode-wrapper {
+    padding: 7px 0;
+}
+
+.product-name {
+    font-size: 14px;
+}
+
+.barcode-number, .product-price {
+    margin-top: 3px;
+    font-size: 14px;
+}

@@ -1,0 +1,84 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Barcode
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+?>
+
+<?php
+/** @var Mageplaza\Barcode\Block\Adminhtml\Product\MassAction\Template $block */
+?>
+
+<style>
+    #mp-barcode-print-modal,
+    .field-barcode_type,
+    .field-barcode_label_template,
+    .field-paper_template,
+    .field-preview_button {
+        display: none;
+    }
+    
+    #mp_barcode_preview_paper {
+        width: 65%;
+        height: 800px;
+        margin: auto;
+        display: none;
+    }
+    
+    #mp-barcode-modal-form {
+        margin-top: 50px;
+    }
+    
+    .mp-barcode-use-config-settings {
+        margin-top: 10px;
+    }
+</style>
+
+<div id="mp-barcode-print-modal">
+    <div class="page-main-actions">
+        <div class="page-actions" data-ui-id="page-actions-toolbar-content-header">
+            <div class="page-actions-inner" data-title="<?= /* @noEscape */ __('Print') ?>">
+                <div class="page-actions-buttons">
+                    <button id="mass_print_barcode"
+                            title="<?= /* @noEscape */ __('Print') ?>"
+                            type="button"
+                            class="scalable primary">
+                        <span><?= /* @noEscape */ __('Print') ?></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mp-barcode-modal-form" class="page-columns">
+        <?= /* @noEscape */ $block->getChildHtml() ?>
+        <div>
+            <iframe id="mp_barcode_preview_paper" type="application/pdf" src=""></iframe>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#mp-barcode-print-modal": {
+            "Mageplaza_Barcode/js/modal/mass-print": {
+                "previewUrl": "<?= /* @noEscape */ $block->getAjaxUrl() ?>"
+            }
+        }
+    }
+</script>

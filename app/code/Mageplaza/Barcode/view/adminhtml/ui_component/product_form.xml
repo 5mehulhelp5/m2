@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Barcode
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="buttons" xsi:type="array">
+            <item name="mpPrintBarcodeButton" xsi:type="string">Mageplaza\Barcode\Block\Adminhtml\Product\Edit\PrintBarcode</item>
+        </item>
+    </argument>
+
+    <modal name="mp_barcode_modal">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="dataScope" xsi:type="string">data.product</item>
+                <item name="provider" xsi:type="string">product_form.product_form_data_source</item>
+                <item name="onCancel" xsi:type="string">actionCancel</item>
+                <item name="component" xsi:type="string">Mageplaza_Barcode/js/modal/modal-component</item>
+                <item name="options" xsi:type="array">
+                    <item name="title" xsi:type="string">Print Barcode Label</item>
+                    <item name="buttons" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="text" xsi:type="string">Print</item>
+                            <item name="class" xsi:type="string">action-primary</item>
+                            <item name="actions" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">${ $.name }</item>
+                                    <item name="actionName" xsi:type="string">printBarcode</item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+
+        <fieldset name="barcode_data">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string"/>
+                    <item name="dataScope" xsi:type="string">barcode_data</item>
+                </item>
+            </argument>
+
+            <field name="submitUrl">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string" />
+                        <item name="formElement" xsi:type="string">hidden</item>
+                        <item name="dataScope" xsi:type="string">submit_url</item>
+                        <item name="sortOrder" xsi:type="number">10</item>
+                        <item name="value" xsi:type="object">Mageplaza\Barcode\Model\Source\BarcodeConfiguration</item>
+                    </item>
+                </argument>
+            </field>
+
+            <field name="qty">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Quantity</item>
+                        <item name="formElement" xsi:type="string">input</item>
+                        <item name="sortOrder" xsi:type="number">100</item>
+                        <item name="value" xsi:type="number">50</item>
+                        <item name="dataScope" xsi:type="string">qty</item>
+                        <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                        <item name="notice" xsi:type="string" translate="true">Print quantity is recommended to be less than 200 barcode labels.</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="validate-number" xsi:type="boolean">true</item>
+                            <item name="validate-digits" xsi:type="boolean">true</item>
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+
+            <fieldset name="barcode_custom">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Advanced Printing</item>
+                        <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                        <item name="sortOrder" xsi:type="number">200</item>
+                    </item>
+                </argument>
+
+                <field name="custom_print_barcode">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="label" xsi:type="string" translate="true">Custom Print Barcode</item>
+                            <item name="formElement" xsi:type="string">select</item>
+                            <item name="rawOptions" xsi:type="boolean">true</item>
+                            <item name="dataScope" xsi:type="string">custom_print_barcode</item>
+                            <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                            <item name="sortOrder" xsi:type="number">10</item>
+                            <item name="value" xsi:type="object">Mageplaza\Barcode\Model\Source\BarcodeConfiguration</item>
+                        </item>
+                        <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                    </argument>
+                </field>
+
+                <container name="container_barcode_type">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="formElement" xsi:type="string">container</item>
+                            <item name="component" xsi:type="string">Magento_Ui/js/form/components/group</item>
+                            <item name="sortOrder" xsi:type="number">20</item>
+                            <item name="imports" xsi:type="array">
+                                <item name="visible" xsi:type="string">${$.provider}:data.product.barcode_data.custom_print_barcode</item>
+                            </item>
+                        </item>
+                    </argument>
+                    <field name="barcode_type">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">Barcode Type</item>
+                                <item name="formElement" xsi:type="string">select</item>
+                                <item name="rawOptions" xsi:type="boolean">true</item>
+                                <item name="dataScope" xsi:type="string">barcode_type</item>
+                                <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                                <item name="value" xsi:type="object">Mageplaza\Barcode\Model\Source\BarcodeConfiguration</item>
+                            </item>
+                            <item name="options" xsi:type="object">Mageplaza\Barcode\Model\System\Config\Source\BarcodeType</item>
+                        </argument>
+                    </field>
+                    <field name="use_config_barcode_type">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="description" xsi:type="string" translate="true">Use Config Settings</item>
+                                <item name="formElement" xsi:type="string">checkbox</item>
+                                <item name="dataScope" xsi:type="string">use_config_barcode_type</item>
+                                <item name="valueMap" xsi:type="array">
+                                    <item name="true" xsi:type="string">1</item>
+                                    <item name="false" xsi:type="string">0</item>
+                                </item>
+                                <item name="value" xsi:type="string">1</item>
+                                <item name="component" xsi:type="string">Mageplaza_Barcode/js/components/use-config-settings</item>
+                                <item name="class" xsi:type="string">Mageplaza\Barcode\Ui\Component\Product\Form\Element\UseConfigSettings</item>
+                                <item name="defaultConfig" xsi:type="object">Mageplaza\Barcode\Model\Source\BarcodeConfiguration</item>
+                                <item name="keyInConfig" xsi:type="string">barcode_type</item>
+                                <item name="links" xsi:type="array">
+                                    <item name="linkedValue" xsi:type="string">${$.provider}:data.product.barcode_data.barcode_type</item>
+                                </item>
+                                <item name="exports" xsi:type="array">
+                                    <item name="checked" xsi:type="string">${$.parentName}.barcode_type:disabled</item>
+                                </item>
+                            </item>
+                        </argument>
+                    </field>
+                </container>
+
+                <container name="container_paper_template">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="formElement" xsi:type="string">container</item>
+                            <item name="component" xsi:type="string">Magento_Ui/js/form/components/group</item>
+                            <item name="sortOrder" xsi:type="number">30</item>
+                            <item name="imports" xsi:type="array">
+                                <item name="visible" xsi:type="string">${$.provider}:data.product.barcode_data.custom_print_barcode</item>
+                            </item>
+                        </item>
+                    </argument>
+                    <field name="paper_template">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">Paper Template</item>
+                                <item name="formElement" xsi:type="string">select</item>
+                                <item name="rawOptions" xsi:type="boolean">true</item>
+                                <item name="dataScope" xsi:type="string">paper_template</item>
+                                <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                                <item name="value" xsi:type="object">Mageplaza\Barcode\Model\Source\BarcodeConfiguration</item>
+                            </item>
+                            <item name="options" xsi:type="object">Mageplaza\Barcode\Model\System\Config\Source\PaperTemplate</item>
+                        </argument>
+                    </field>
+                    <field name="use_config_paper_template">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="description" xsi:type="string" translate="true">Use Config Settings</item>
+                                <item name="formElement" xsi:type="string">checkbox</item>
+                                <item name="dataScope" xsi:type="string">use_config_paper_template</item>
+                                <item name="valueMap" xsi:type="array">
+                                    <item name="true" xsi:type="string">1</item>
+                                    <item name="false" xsi:type="string">0</item>
+                                </item>
+                                <item name="value" xsi:type="string">1</item>
+                                <item name="component" xsi:type="string">Mageplaza_Barcode/js/components/use-config-settings</item>
+                                <item name="class" xsi:type="string">Mageplaza\Barcode\Ui\Component\Product\Form\Element\UseConfigSettings</item>
+                                <item name="defaultConfig" xsi:type="object">Mageplaza\Barcode\Model\Source\BarcodeConfiguration</item>
+                                <item name="keyInConfig" xsi:type="string">paper_template</item>
+                                <item name="links" xsi:type="array">
+                                    <item name="linkedValue" xsi:type="string">${$.provider}:data.product.barcode_data.paper_template</item>
+                                </item>
+                                <item name="exports" xsi:type="array">
+                                    <item name="checked" xsi:type="string">${$.parentName}.paper_template:disabled</item>
+                                </item>
+                            </item>
+                        </argument>
+                    </field>
+                </container>
+
+                <container name="container_barcode_label_template">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="formElement" xsi:type="string">container</item>
+                            <item name="component" xsi:type="string">Magento_Ui/js/form/components/group</item>
+                            <item name="sortOrder" xsi:type="number">40</item>
+                            <item name="imports" xsi:type="array">
+                                <item name="visible" xsi:type="string">${$.provider}:data.product.barcode_data.custom_print_barcode</item>
+                            </item>
+                        </item>
+                    </argument>
+                    <field name="barcode_label_template">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">Barcode Label Template</item>
+                                <item name="formElement" xsi:type="string">select</item>
+                                <item name="rawOptions" xsi:type="boolean">true</item>
+                                <item name="dataScope" xsi:type="string">barcode_label_template</item>
+                                <item name="scopeLabel" xsi:type="string">[GLOBAL]</item>
+                                <item name="value" xsi:type="object">Mageplaza\Barcode\Model\Source\BarcodeConfiguration</item>
+                            </item>
+                            <item name="options" xsi:type="object">Mageplaza\Barcode\Model\System\Config\Source\LabelTemplate</item>
+                        </argument>
+                    </field>
+                    <field name="use_config_barcode_label_template">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="description" xsi:type="string" translate="true">Use Config Settings</item>
+                                <item name="formElement" xsi:type="string">checkbox</item>
+                                <item name="dataScope" xsi:type="string">use_config_barcode_label_template</item>
+                                <item name="valueMap" xsi:type="array">
+                                    <item name="true" xsi:type="string">1</item>
+                                    <item name="false" xsi:type="string">0</item>
+                                </item>
+                                <item name="value" xsi:type="string">1</item>
+                                <item name="component" xsi:type="string">Mageplaza_Barcode/js/components/use-config-settings</item>
+                                <item name="class" xsi:type="string">Mageplaza\Barcode\Ui\Component\Product\Form\Element\UseConfigSettings</item>
+                                <item name="defaultConfig" xsi:type="object">Mageplaza\Barcode\Model\Source\BarcodeConfiguration</item>
+                                <item name="keyInConfig" xsi:type="string">barcode_label_template</item>
+                                <item name="links" xsi:type="array">
+                                    <item name="linkedValue" xsi:type="string">${$.provider}:data.product.barcode_data.barcode_label_template</item>
+                                </item>
+                                <item name="exports" xsi:type="array">
+                                    <item name="checked" xsi:type="string">${$.parentName}.barcode_label_template:disabled</item>
+                                </item>
+                            </item>
+                        </argument>
+                    </field>
+                </container>
+
+                <container name="paper_template_preview" >
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="sortOrder" xsi:type="number">50</item>
+                        </item>
+                    </argument>
+                    <htmlContent name="paper_template_preview_html">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="additionalClasses" xsi:type="array">
+                                    <item name="admin__field" xsi:type="boolean">true</item>
+                                </item>
+                                <item name="imports" xsi:type="array">
+                                    <item name="visible" xsi:type="string">${$.provider}:data.product.barcode_data.custom_print_barcode</item>
+                                </item>
+                            </item>
+                        </argument>
+                        <argument name="block" xsi:type="object">Mageplaza\Barcode\Block\Adminhtml\Product\Form\PaperPreview</argument>
+                    </htmlContent>
+                </container>
+            </fieldset>
+        </fieldset>
+
+    </modal>
+</form>

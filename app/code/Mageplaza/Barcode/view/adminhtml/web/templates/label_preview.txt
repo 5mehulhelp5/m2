@@ -1,0 +1,5 @@
+.barcode-label-template {
+padding : {{padding}}mm;
+}
+
+{{customCss}}

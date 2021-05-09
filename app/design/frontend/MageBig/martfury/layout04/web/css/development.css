@@ -2,6 +2,33 @@ div[name*="shippingAddress.postcode"] {
   display: none
 }
 
+.contact-info-text .title {
+    margin: 0 0 70px;
+}
+
+.contact-index-index .page-bottom-content{
+   display: flex;
+    flex-wrap: wrap;
+}
+
+form#contact-form{
+    flex: 0 0 60%;
+    max-width: 60%;
+}
+
+.google-map{
+  flex: 0 0 calc(40% - 30px);
+    max-width: calc(40% - 30px);
+    margin-left: 30px;
+}
+.contact-index-index iframe{
+
+    height: calc(100% - 160px);
+    width: 100%;
+    margin-top: 62px;
+    border: none;
+}
+
 .mr-payment img {
     max-width: 10% !important;
 }

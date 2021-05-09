@@ -1,0 +1,79 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Barcode
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+?>
+
+<?php
+/** @var Mageplaza\Barcode\Block\Adminhtml\Product\Import\Template $block */
+?>
+
+<style>
+    #mp-barcode-import-modal, #mp-barcode-import-message, #mp-barcode-print-btn-div {
+        display: none;
+    }
+    
+    #mp-barcode-import-modal label.data-grid-checkbox-cell-inner {
+        position: relative;
+    }
+    
+</style>
+
+<div id="mp-barcode-import-modal">
+    <div class="page-main-actions" id="mp-barcode-print-btn-div">
+        <div class="page-actions" data-ui-id="page-actions-toolbar-content-header">
+            <div class="page-actions-inner" data-title="<?= /* @noEscape */ __('Print') ?>">
+                <div class="page-actions-buttons">
+                    <button id="mass_print_barcode_csv"
+                            title="<?= /* @noEscape */ __('Print') ?>"
+                            type="button"
+                            class="scalable primary">
+                        <span><?= /* @noEscape */ __('Print') ?></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="mp-barcode-modal-form" class="page-columns">
+        <?= /* @noEscape */
+        $block->getChildHtml('mp_barcode_import_modal_form') ?>
+    </div>
+
+    <div class="messages" id="mp-barcode-import-message">
+        <div class="message message-info info">
+            <div data-ui-id="messages-message-info" id="message-content"></div>
+        </div>
+    </div>
+    
+    <div id="mp-barcode-modal-csv-result"></div>
+
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#mp-barcode-import-modal": {
+            "Mageplaza_Barcode/js/modal/import": {
+                "gridUrl": "<?= /* @noEscape */ $block->getAjaxUrl('grid') ?>",
+                "printUrl": "<?= /* @noEscape */ $block->getAjaxUrl('massprint') ?>"
+            }
+        }
+    }
+
+</script>

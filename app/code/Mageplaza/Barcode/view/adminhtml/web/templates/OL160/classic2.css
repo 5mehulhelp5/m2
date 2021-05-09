@@ -1,0 +1,11 @@
+/* ol160-classic2 */
+.barcode-wrapper, .barcode-number {
+    text-align: center;
+    font-weight: bold;
+    padding-top: 30px;
+}
+
+.barcode-number {
+    padding-top: 10px;
+    font-style: italic;
+}

@@ -1,0 +1,45 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Barcode
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+/** @var Mageplaza\Barcode\Block\Adminhtml\System\Config\Preview\LabelTemplate $block */
+?>
+<style>
+    #mp_barcode_barcode_label_preview {
+        position: relative;
+        height: 0;
+    }
+
+    #mpbarcode_barcode_label_content, #mpbarcode_barcode_label_css {
+        height: 250px;
+    }
+
+    #mp_barcode_barcode_label_preview iframe {
+        position: absolute;
+        height: 450px;
+        width: 750px;
+        left: -210px;
+        display: none;
+    }
+</style>
+
+<section id="mp_barcode_barcode_label_preview">
+    <iframe type="application/pdf" src=""></iframe>
+</section>

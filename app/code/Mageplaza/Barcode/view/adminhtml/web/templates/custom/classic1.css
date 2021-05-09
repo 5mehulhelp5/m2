@@ -1,0 +1,13 @@
+.barcode-wrapper, .product-name, .product-sku {
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+.product-name {
+    font-size: 26px;
+}
+
+.product-sku {
+    font-size: 22px;
+}

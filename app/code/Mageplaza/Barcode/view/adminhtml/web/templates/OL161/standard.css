@@ -1,0 +1,14 @@
+/* ol161-standard*/
+.barcode-wrapper, .product-name, .product-price, .barcode-number {
+    text-align: center;
+    font-weight: bold;
+    padding: 2px 0;
+}
+
+.barcode-number {
+    font-style: italic;
+}
+
+.product-name, .product-price {
+    font-size: 16px;
+}

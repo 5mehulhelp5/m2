@@ -1,0 +1,15 @@
+.paper-label-wrapper, .paper-label {
+    width: {{width}}mm;
+}
+
+.paper-label{
+    height: {{height}}mm;
+    padding: {{padding}}mm;
+    border-radius: 7px;
+    border: 2px solid #555555;
+}
+.paper-label-wrapper {
+    float: left;
+    height: {{vertical_pitch}}mm;
+    margin-left: {{horizontal}}mm;
+}

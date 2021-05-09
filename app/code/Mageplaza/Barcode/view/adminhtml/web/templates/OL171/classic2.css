@@ -1,0 +1,6 @@
+/* ol171-classic2 */
+.barcode-wrapper, .barcode-number {
+    text-align: center;
+    font-weight: bold;
+    padding-top: 30px;
+}

@@ -11,6 +11,7 @@
         "sort-packages": true
     },
     "require": {
+        "facebook/php-business-sdk": "^9.0",
         "hybridauth/hybridauth": "^2.14",
         "innomuebles/core": "*",
         "mage2pro/core": "*",

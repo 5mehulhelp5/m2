@@ -1,0 +1,17 @@
+.barcode-wrapper, .product-name, .product-price, .barcode-number {
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+.barcode-number {
+    font-style: italic;
+}
+
+.product-name {
+    font-size: 20px;
+}
+
+.product-price {
+    font-size: 16px;
+}

@@ -1,0 +1,192 @@
+"Check and Show","Check and Show"
+"Preview Paper Template","Preview Paper Template"
+Import,Import
+"Allow csv file type.","Allow csv file type."
+"Learn more ","Learn more "
+"Download sample file","Download sample file"
+Quantity,Quantity
+"Print quantity is recommended to be less than 200 barcode labels.","Print quantity is recommended to be less than 200 barcode labels."
+"Advanced Printing","Advanced Printing"
+"Custom Print Barcode","Custom Print Barcode"
+"Barcode Type","Barcode Type"
+"Paper Template","Paper Template"
+"Barcode Label Template","Barcode Label Template"
+"Use Config Settings","Use Config Settings"
+"Print Barcode","Print Barcode"
+"Product ID","Product ID"
+Name,Name
+Sku,Sku
+"Mageplaza Barcode","Mageplaza Barcode"
+button_label,button_label
+"%1 Barcode Number(s) Generated Successfully.","%1 Barcode Number(s) Generated Successfully."
+"Fail To Generate Barcode Number.","Fail To Generate Barcode Number."
+"Missing CSV File","Missing CSV File"
+"Invalid CSV File Content","Invalid CSV File Content"
+"Checked rows: %1, valid rows: %2, invalid rows: %3","Checked rows: %1, valid rows: %2, invalid rows: %3"
+"SKU is empty.","SKU is empty."
+"Barcode is already exist.","Barcode is already exist."
+"SKU is already exist.","SKU is already exist."
+"Cannot find product with the given SKU.","Cannot find product with the given SKU."
+"Invalid Row Data.","Invalid Row Data."
+"Incorrect Paper Margin Format","Incorrect Paper Margin Format"
+"Paper Margin %1 Must Be A Positive Float Number","Paper Margin %1 Must Be A Positive Float Number"
+frontend_label,frontend_label
+EAN13,EAN13
+ISBN,ISBN
+ISSN,ISSN
+UPC-A,UPC-A
+UPC-E,UPC-E
+EAN-8,EAN-8
+"Intelligent Mail","Intelligent Mail"
+"Royal Mail 4-state Customer","Royal Mail 4-state Customer"
+"Royal Mail 4-state Customer (Dutch)","Royal Mail 4-state Customer (Dutch)"
+POSTNET,POSTNET
+PLANET,PLANET
+"Code 128 A","Code 128 A"
+"Code 128 B","Code 128 B"
+"Code 128 C","Code 128 C"
+"UCC/EAN-128 A","UCC/EAN-128 A"
+"UCC/EAN-128 B","UCC/EAN-128 B"
+"UCC/EAN-128 C","UCC/EAN-128 C"
+"Code 39","Code 39"
+"Code 39+","Code 39+"
+"Code 39E","Code 39E"
+"Code 39E+","Code 39E+"
+"Standard 2 of 5","Standard 2 of 5"
+"Standard 2 of 5+","Standard 2 of 5+"
+"Interleaved 2 of 5","Interleaved 2 of 5"
+"Interleaved 2 of 5 +","Interleaved 2 of 5 +"
+"Interleaved 2 of 5 B","Interleaved 2 of 5 B"
+"Interleaved 2 of 5 B+","Interleaved 2 of 5 B+"
+MSI,MSI
+MSI+,MSI+
+C93,C93
+CODABAR,CODABAR
+CODE11,CODE11
+Standard,Standard
+"Classic 1","Classic 1"
+"Classic 2","Classic 2"
+"Standard with QR code","Standard with QR code"
+Portrait,Portrait
+Landscape,Landscape
+A4,A4
+A5,A5
+A6,A6
+Letter,Letter
+"Template OL161","Template OL161"
+"Template OL160","Template OL160"
+"Template OL171","Template OL171"
+Custom,Custom
+Print,Print
+"Replace all barcode value.","Replace all barcode value."
+Error,Error
+"Request Error","Request Error"
+"Preview Error","Preview Error"
+"Barcode Label Content Is Empty","Barcode Label Content Is Empty"
+"Load Default Template or Fill In Content to Preview","Load Default Template or Fill In Content to Preview"
+"Print Barcode Label","Print Barcode Label"
+"Print Import Barcode Label","Print Import Barcode Label"
+Barcode,Barcode
+"General Configuration","General Configuration"
+Enable,Enable
+"Select <strong>Yes</strong> to enable this module","Select <strong>Yes</strong> to enable this module"
+"Attribute for Barcode","Attribute for Barcode"
+"Attributes for generating barcode. If you don't find the attribute you want, please contact us for support.","Attributes for generating barcode. If you don't find the attribute you want, please contact us for support."
+"Barcode Number Template","Barcode Number Template"
+"Default gift code pattern. Follow by this rule: <br>
+                            <strong>[4A]</strong> - 4 alpha, <strong>[4N]</strong> - 4 numeric, <strong>[4AN]</strong> - 4 alphanumeric.<br>
+                            Example: <br>
+                            Number <strong>8</strong> is used as a default example check digit.<br>
+                            1. EAN13 for UK: <strong>509[4N][5N]8</strong> => 5091234123458<br>
+                            2. EAN8 for UK: <strong>509[4N]8</strong> => 50912348<br>
+                            3. ISBN for UK: <strong>509[2N][4N][3N]8</strong> => 5091212341238<br>
+                            4. ISSN: <strong>[4N][3N]8</strong> => 20493608<br>
+                            5. UPC-A: <strong>[6N][5N]8</strong> => 042100005268<br>
+                            6. UPC-E: <strong>[6N]</strong> => 425261<br>","Default gift code pattern. Follow by this rule: <br>
+                            <strong>[4A]</strong> - 4 alpha, <strong>[4N]</strong> - 4 numeric, <strong>[4AN]</strong> - 4 alphanumeric.<br>
+                            Example: <br>
+                            Number <strong>8</strong> is used as a default example check digit.<br>
+                            1. EAN13 for UK: <strong>509[4N][5N]8</strong> => 5091234123458<br>
+                            2. EAN8 for UK: <strong>509[4N]8</strong> => 50912348<br>
+                            3. ISBN for UK: <strong>509[2N][4N][3N]8</strong> => 5091212341238<br>
+                            4. ISSN: <strong>[4N][3N]8</strong> => 20493608<br>
+                            5. UPC-A: <strong>[6N][5N]8</strong> => 042100005268<br>
+                            6. UPC-E: <strong>[6N]</strong> => 425261<br>"
+"Auto Generate Barcode","Auto Generate Barcode"
+RUN,RUN
+"Click RUN to generate barcode number for products without barcode value.</br>
+                            The Action is available in Magento CLI: </br>
+                            <strong>php bin/magento mpbarcode:autogen</strong>","Click RUN to generate barcode number for products without barcode value.</br>
+                            The Action is available in Magento CLI: </br>
+                            <strong>php bin/magento mpbarcode:autogen</strong>"
+"Barcode Design","Barcode Design"
+"Encoding Type For Barcode. <a href=""https://www.scandit.com/blog/types-barcodes-choosing-right-barcode/"" target=""_blank""
+                                rel=""noopener noreferrer"">
+                                    Learn More
+                                </a>","Encoding Type For Barcode. <a href=""https://www.scandit.com/blog/types-barcodes-choosing-right-barcode/"" target=""_blank""
+                                rel=""noopener noreferrer"">
+                                    Learn More
+                                </a>"
+"Printing Paper","Printing Paper"
+"<a href=""https://www.onlinelabels.com/templates/ol161-template"" target=""_blank""
+                                rel=""noopener noreferrer""
+                                id=""mpbarcode_paper_template_detail_url"">
+                                    Template Detail
+                                </a>","<a href=""https://www.onlinelabels.com/templates/ol161-template"" target=""_blank""
+                                rel=""noopener noreferrer""
+                                id=""mpbarcode_paper_template_detail_url"">
+                                    Template Detail
+                                </a>"
+"Load Template","Load Template"
+"Paper Size","Paper Size"
+"Barcode Label Width","Barcode Label Width"
+"Measuring Unit: Millimeter","Measuring Unit: Millimeter"
+"Barcode Label Height","Barcode Label Height"
+"Barcode Label Padding","Barcode Label Padding"
+"Paper Margin","Paper Margin"
+"<span>Measuring Unit: Millimeter</span>
+                                <br/>
+                                <span>Paper Margin is explicitly specified by float number and separated by semicolon (;) as following:</span>
+                                <br/>
+                                <span>margin-top;margin-right;margin-bottom;margin-left</span>
+                                <br/>
+                                <span>Decimal Separator is dot (.) symbol</span>","<span>Measuring Unit: Millimeter</span>
+                                <br/>
+                                <span>Paper Margin is explicitly specified by float number and separated by semicolon (;) as following:</span>
+                                <br/>
+                                <span>margin-top;margin-right;margin-bottom;margin-left</span>
+                                <br/>
+                                <span>Decimal Separator is dot (.) symbol</span>"
+"Vertical Spacing","Vertical Spacing"
+"<span>Measuring Unit: Millimeter</span>
+                                <br/>
+                                <span>The space between two barcode labels on the same column</span>","<span>Measuring Unit: Millimeter</span>
+                                <br/>
+                                <span>The space between two barcode labels on the same column</span>"
+"Horizontal Spacing","Horizontal Spacing"
+"<span>Measuring Unit: Millimeter</span>
+                                <br/>
+                                <span>The space between two barcode labels on the same row</span>","<span>Measuring Unit: Millimeter</span>
+                                <br/>
+                                <span>The space between two barcode labels on the same row</span>"
+"Paper Orientation","Paper Orientation"
+"Label Content","Label Content"
+Logo,Logo
+"Barcode Width","Barcode Width"
+"Barcode Height","Barcode Height"
+"QR Code Size","QR Code Size"
+"Barcode Label Content","Barcode Label Content"
+"Variables: {{barcode}}, {{barcode_number}}, {{logo_url}}, {{product_name}},
+                            {{product_price}},{{product_sku}} {{attribute_code}}, {{qrcode}}
+                            <br>
+                            See the instruction to apply variables to Custom Barcode Label Content
+                            <a href=""http://docs.mageplaza.com/barcode/"" target=""_blank"" rel=""noopener noreferrer"">here</a>.","Variables: {{barcode}}, {{barcode_number}}, {{logo_url}}, {{product_name}},
+                            {{product_price}},{{product_sku}} {{attribute_code}}, {{qrcode}}
+                            <br>
+                            See the instruction to apply variables to Custom Barcode Label Content
+                            <a href=""http://docs.mageplaza.com/barcode/"" target=""_blank"" rel=""noopener noreferrer"">here</a>."
+"Barcode Label CSS","Barcode Label CSS"
+"Preview Barcode Label","Preview Barcode Label"
+"Print Sample File","Print Sample File"
+"Print Sample","Print Sample"
+"Save Config Before Print","Save Config Before Print"

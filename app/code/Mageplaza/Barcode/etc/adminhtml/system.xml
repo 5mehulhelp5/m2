@@ -1,0 +1,279 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Barcode
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="mpbarcode" translate="label" sortOrder="220" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Barcode</label>
+            <tab>mageplaza</tab>
+            <resource>Mageplaza_Barcode::configuration</resource>
+
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Select <strong>Yes</strong> to enable this module]]></comment>
+                </field>
+
+                <field id="attribute_barcode" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Attribute for Barcode</label>
+                    <source_model>Mageplaza\Barcode\Model\System\Config\Source\AttributeBarcode</source_model>
+                    <comment>Attributes for generating barcode. If you don't find the attribute you want, please contact us for support.</comment>
+                </field>
+
+                <field id="barcode_template" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Barcode Number Template</label>
+                    <comment>
+                        <![CDATA[
+                            Default gift code pattern. Follow by this rule: <br>
+                            <strong>[4A]</strong> - 4 alpha, <strong>[4N]</strong> - 4 numeric, <strong>[4AN]</strong> - 4 alphanumeric.<br>
+                            Example: <br>
+                            Number <strong>8</strong> is used as a default example check digit.<br>
+                            1. EAN13 for UK: <strong>509[4N][5N]8</strong> => 5091234123458<br>
+                            2. EAN8 for UK: <strong>509[4N]8</strong> => 50912348<br>
+                            3. ISBN for UK: <strong>509[2N][4N][3N]8</strong> => 5091212341238<br>
+                            4. ISSN: <strong>[4N][3N]8</strong> => 20493608<br>
+                            5. UPC-A: <strong>[6N][5N]8</strong> => 042100005268<br>
+                            6. UPC-E: <strong>[6N]</strong> => 425261<br>
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="attribute_barcode">mp_barcode</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                </field>
+
+                <field id="btn_generate" translate="label button_label comment" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Auto Generate Barcode</label>
+                    <button_label>RUN</button_label>
+                    <button_url>mpbarcode/barcode/run</button_url>
+                    <frontend_model>Mageplaza\Barcode\Block\Adminhtml\System\Config\Button\ActionButton</frontend_model>
+                    <backend_model>Mageplaza\Barcode\Model\System\Config\Backend\Regenerate</backend_model>
+                    <comment>
+                        <![CDATA[
+                            Click RUN to generate barcode number for products without barcode value.</br>
+                            The Action is available in Magento CLI: </br>
+                            <strong>php bin/magento mpbarcode:autogen</strong>
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="attribute_barcode">mp_barcode</field>
+                    </depends>
+                </field>
+            </group>
+
+            <group id="barcode" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Barcode Design</label>
+
+                <field id="type" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Barcode Type</label>
+                    <source_model>Mageplaza\Barcode\Model\System\Config\Source\BarcodeType</source_model>
+                    <comment>
+                        <![CDATA[
+                            Encoding Type For Barcode. <a href="https://www.scandit.com/blog/types-barcodes-choosing-right-barcode/" target="_blank"
+                                rel="noopener noreferrer">
+                                    Learn More
+                                </a>
+                        ]]>
+                    </comment>
+                </field>
+
+                <group id="paper" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Printing Paper</label>
+
+                    <field id="paper_template" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Paper Template</label>
+                        <source_model>Mageplaza\Barcode\Model\System\Config\Source\PaperTemplate</source_model>
+                        <backend_model>Mageplaza\Barcode\Model\System\Config\Backend\PaperTemplate</backend_model>
+                        <comment>
+                            <![CDATA[
+                                <a href="https://www.onlinelabels.com/templates/ol161-template" target="_blank"
+                                rel="noopener noreferrer"
+                                id="mpbarcode_paper_template_detail_url">
+                                    Template Detail
+                                </a>
+                            ]]>
+                        </comment>
+                    </field>
+
+                    <field id="btn_load" translate="button_label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <button_label>Load Template</button_label>
+                        <button_url>mpbarcode/barcode/loadtemplate</button_url>
+                        <frontend_model>Mageplaza\Barcode\Block\Adminhtml\System\Config\Button\ActionButton</frontend_model>
+                    </field>
+
+                    <field id="paper_size" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Paper Size</label>
+                        <source_model>Mageplaza\Barcode\Model\System\Config\Source\PaperSize</source_model>
+                    </field>
+
+                    <field id="width" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Barcode Label Width</label>
+                        <validate>required-entry validate-zero-or-greater validate-number</validate>
+                        <comment>Measuring Unit: Millimeter</comment>
+                    </field>
+
+                    <field id="height" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Barcode Label Height</label>
+                        <validate>required-entry validate-zero-or-greater validate-number</validate>
+                        <comment>Measuring Unit: Millimeter</comment>
+                    </field>
+
+                    <field id="padding" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Barcode Label Padding</label>
+                        <validate>required-entry validate-zero-or-greater validate-number</validate>
+                        <comment>Measuring Unit: Millimeter</comment>
+                    </field>
+
+                    <field id="margin" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Paper Margin</label>
+                        <validate>required-entry</validate>
+                        <backend_model>Mageplaza\Barcode\Model\System\Config\Backend\PaperMargin</backend_model>
+                        <comment>
+                            <![CDATA[
+                                <span>Measuring Unit: Millimeter</span>
+                                <br/>
+                                <span>Paper Margin is explicitly specified by float number and separated by semicolon (;) as following:</span>
+                                <br/>
+                                <span>margin-top;margin-right;margin-bottom;margin-left</span>
+                                <br/>
+                                <span>Decimal Separator is dot (.) symbol</span>
+                            ]]>
+                        </comment>
+                    </field>
+
+                    <field id="vertical" translate="label comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Vertical Spacing</label>
+                        <validate>required-entry validate-zero-or-greater validate-number</validate>
+                        <comment>
+                            <![CDATA[
+                                <span>Measuring Unit: Millimeter</span>
+                                <br/>
+                                <span>The space between two barcode labels on the same column</span>
+                            ]]>
+                        </comment>
+                    </field>
+
+                    <field id="horizontal" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Horizontal Spacing</label>
+                        <validate>required-entry validate-zero-or-greater validate-number</validate>
+                        <comment>
+                            <![CDATA[
+                                <span>Measuring Unit: Millimeter</span>
+                                <br/>
+                                <span>The space between two barcode labels on the same row</span>
+                            ]]>
+                        </comment>
+                    </field>
+
+                    <field id="orientation" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Paper Orientation</label>
+                        <source_model>Mageplaza\Barcode\Model\System\Config\Source\PaperOrientation</source_model>
+                    </field>
+
+                    <field id="btn_preview_paper" translate="button_label" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <button_label>Preview Paper Template</button_label>
+                        <button_url>mpbarcode/barcode/previewpaper</button_url>
+                        <frontend_model>Mageplaza\Barcode\Block\Adminhtml\System\Config\Button\ActionButton</frontend_model>
+                    </field>
+
+                    <field id="preview_paper" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Mageplaza\Barcode\Block\Adminhtml\System\Config\Preview\PaperTemplate</frontend_model>
+                    </field>
+                </group>
+
+                <group id="label" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Label Content</label>
+
+                    <field id="logo" translate="label" type="image" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Logo</label>
+                        <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                        <upload_dir config="system/filesystem/media" scope_info="1">mageplaza/barcode</upload_dir>
+                        <base_url type="media" scope_info="1">mageplaza/barcode</base_url>
+                    </field>
+
+                    <field id="template" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Barcode Label Template</label>
+                        <source_model>Mageplaza\Barcode\Model\System\Config\Source\LabelTemplate</source_model>
+                    </field>
+
+                    <field id="width" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Barcode Width</label>
+                        <validate>required-entry validate-zero-or-greater validate-number</validate>
+                    </field>
+
+                    <field id="height" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Barcode Height</label>
+                        <validate>required-entry validate-zero-or-greater validate-number</validate>
+                    </field>
+
+                    <field id="size" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>QR Code Size</label>
+                        <validate>required-entry validate-zero-or-greater validate-number</validate>
+                        <depends>
+                            <field id="template">qrCode</field>
+                        </depends>
+                    </field>
+
+                    <field id="content" translate="label comment" type="textarea" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Barcode Label Content</label>
+                        <comment>
+                            <![CDATA[
+                            Variables: {{barcode}}, {{barcode_number}}, {{logo_url}}, {{product_name}},
+                            {{product_price}},{{product_sku}} {{attribute_code}}, {{qrcode}}
+                            <br>
+                            See the instruction to apply variables to Custom Barcode Label Content
+                            <a href="http://docs.mageplaza.com/barcode/" target="_blank" rel="noopener noreferrer">here</a>.
+                        ]]>
+                        </comment>
+                    </field>
+
+                    <field id="css" translate="label" type="textarea" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Barcode Label CSS</label>
+                    </field>
+
+                    <field id="btn_preview_label" translate="button_label" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <button_label>Preview Barcode Label</button_label>
+                        <button_url>mpbarcode/barcode/previewlabel</button_url>
+                        <frontend_model>Mageplaza\Barcode\Block\Adminhtml\System\Config\Button\ActionButton</frontend_model>
+                    </field>
+
+                    <field id="preview_label" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Mageplaza\Barcode\Block\Adminhtml\System\Config\Preview\LabelTemplate</frontend_model>
+                    </field>
+                </group>
+            </group>
+
+            <group id="print" translate="label comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Print Sample File</label>
+                <field id="btn_print_sample" translate="button_label comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <button_label>Print Sample</button_label>
+                    <button_url>mpbarcode/barcode/printsample</button_url>
+                    <comment>Save Config Before Print</comment>
+                    <frontend_model>Mageplaza\Barcode\Block\Adminhtml\System\Config\Button\ActionButton</frontend_model>
+                </field>
+            </group>
+
+        </section>
+    </system>
+</config>

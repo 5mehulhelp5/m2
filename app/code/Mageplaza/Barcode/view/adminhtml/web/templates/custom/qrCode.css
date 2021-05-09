@@ -1,0 +1,28 @@
+.left{
+    width: 64%;
+}
+
+.right{
+    width: 33%;
+    text-align: right;
+}
+
+.left, .right {
+    margin-top: 3px;
+    float: left;
+}
+
+.barcode-wrapper, .product-name, .barcode-number, .product-price {
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+.product-name {
+    font-size: 18px;
+}
+
+.barcode-number, .product-price {
+    margin-top: 5px;
+    font-size: 16px;
+}

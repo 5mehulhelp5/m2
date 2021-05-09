@@ -1,0 +1,87 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Barcode
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+/** @var Mageplaza\Barcode\Block\Adminhtml\Product\Form\PaperPreview $block */
+?>
+
+<style>
+    .mp-barcode-btn {
+        display: block !important;
+        width: 50% !important;
+        padding: 0.6rem 0 !important;
+    }
+
+    iframe {
+        margin-top: 30px;
+        display: none;
+        width: 130%;
+        height: 650px;
+    }
+</style>
+
+<div class="admin__field-label" style="border: 1px solid transparent"></div>
+<div class="admin__field-control">
+    <div class="pp-buttons-container">
+        <button type="button" class="action-default save primary mp-barcode-btn" id="preview_paper_btn">
+            <?= /* @noEscape */ __('Preview Paper Template') ?>
+        </button>
+    </div>
+
+    <iframe id="preview_iframe" type="application/pdf" src=""></iframe>
+</div>
+
+<script type="text/javascript">
+    require([
+        'jquery',
+        'Mageplaza_Barcode/js/barcode/helper',
+        'mage/translate',
+    ], function ($, barcodeHelper, $t) {
+        var previewBtn = $('#preview_paper_btn'),
+            ajaxUrl = '<?= /* @noEscape */ $block->getAjaxUrl() ?>',
+            iframe = $('#preview_iframe');
+        
+        previewBtn.on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: ajaxUrl,
+                showLoader: true,
+                dataType: 'json',
+                data: {
+                    paper: $(barcodeHelper.productEdit.paper).val(),
+                    label: $(barcodeHelper.productEdit.label).val(),
+                    type: $(barcodeHelper.productEdit.type).val(),
+                },
+                success: function (response) {
+                    if (response.error) {
+                        barcodeHelper.alertError($t('Error'), response.message);
+                    } else {
+                        iframe.attr('src', 'data:application/pdf;base64,' + response.data);
+                        iframe.show();
+                    }
+                },
+                error: function (error) {
+                    barcodeHelper.alertError($t('Request Error'), error.status + ' ' + error.statusText);
+                }
+            });
+        });
+        
+    });
+</script>

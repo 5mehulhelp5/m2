@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Barcode
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <mpbarcode>
+            <general>
+                <enabled>1</enabled>
+                <attribute_barcode>mp_barcode</attribute_barcode>
+                <barcode_template>[10N]</barcode_template>
+                <btn_generate>1</btn_generate>
+            </general>
+            <barcode>
+                <type>C93</type>
+                <paper>
+                    <paper_template>OL161</paper_template>
+                    <paper_size>Letter</paper_size>
+                    <width>95.25</width>
+                    <height>31.75</height>
+                    <padding>0</padding>
+                    <margin>29.4513;9.525;29.4513;9.525</margin>
+                    <vertical>5.99948</vertical>
+                    <horizontal>6.35</horizontal>
+                    <orientation>P</orientation>
+                </paper>
+                <label>
+                    <template>standard</template>
+                    <width>1</width>
+                    <height>1</height>
+                    <size>1</size>
+                </label>
+            </barcode>
+        </mpbarcode>
+    </default>
+</config>

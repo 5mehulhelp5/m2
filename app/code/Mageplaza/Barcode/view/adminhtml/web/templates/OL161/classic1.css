@@ -1,0 +1,10 @@
+/* ol161-classic1 */
+.barcode-wrapper, .product-name, .product-sku {
+    text-align: center;
+    font-weight: bold;
+    padding: 3px 0;
+}
+
+.product-name, .product-sku {
+    font-size: 20px;
+}

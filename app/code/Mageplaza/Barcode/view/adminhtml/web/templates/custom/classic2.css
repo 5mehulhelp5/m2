@@ -1,0 +1,5 @@
+.barcode-wrapper, .barcode-number {
+    text-align: center;
+    font-weight: bold;
+    padding-top: 20px;
+}

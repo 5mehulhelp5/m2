@@ -1,0 +1,47 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Barcode
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+namespace Mageplaza\Barcode\Model\System\Config\Source;
+
+/**
+ * Class LabelTemplate
+ * @package Mageplaza\Barcode\Model\System\Config\Source
+ */
+class LabelTemplate extends OptionArray
+{
+    const QR_CODE   = 'qrCode';
+    const CLASSIC_1 = 'classic1';
+    const CLASSIC_2 = 'classic2';
+    const STANDARD  = 'standard';
+
+    /**
+     * @return array
+     */
+    public function getOptionHash()
+    {
+        return [
+            self::STANDARD  => __('Standard'),
+            self::CLASSIC_1 => __('Classic 1'),
+            self::CLASSIC_2 => __('Classic 2'),
+            self::QR_CODE   => __('Standard with QR code'),
+        ];
+    }
+}

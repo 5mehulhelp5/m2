@@ -1,0 +1,35 @@
+/* ol171-qrCode */
+.left{
+    width: 64%;
+}
+
+.right{
+    width: 33%;
+    text-align: right;
+}
+
+.left, .right {
+    float: left;
+}
+
+.barcode-wrapper, .product-name, .barcode-number, .product-price {
+    text-align: center;
+    font-weight: bold;
+}
+
+.barcode-wrapper {
+    padding-top: 12px;
+}
+
+.product-name, .product-price {
+    font-size: 18px;
+}
+
+.product-name, .product-price {
+    margin-top: 10px;
+}
+
+.barcode-number {
+    font-size: 14px;
+    font-style: italic;
+}

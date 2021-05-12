@@ -216,94 +216,6 @@ final class DataGetter {
 		return (phpversion() >= 5.3) ? openssl_digest($concatPurchase, 'sha512') : hash('sha512', $concatPurchase);
 	}
 
-
-	function userCodePayme($params)
-	{
-
-		$concatRegister = $this->idEntCommerce.$params['userCommerce'].$params['billingEmail'].$this->keywallet;
-		$registerVerification =
-			(phpversion() >= 5.3) ? openssl_digest($concatRegister, 'sha512') : hash('sha512', $concatRegister);
-
-		if (!$params['userCommerce']) {
-		   return "";
-		}
-
-		$paramsWallet = array(
-			'idEntCommerce' => (string)$this->idEntCommerce,
-			'codCardHolderCommerce' => (string)$params['userCommerce'],
-			'names' => $params['billingFirstName'],
-			'lastNames' => $params['billingLastName'],
-			'mail' => $params['billingEmail'] ,
-			'reserved1' => $params['reserved1'],
-			'reserved2' => $params['reserved2'],
-			'reserved3' => $params['reserved3'],
-			'registerVerification'=>$registerVerification
-		);
-		$codAsoCardHolder = "";
-
-
-
-		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-		$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
-		$connection = $resource->getConnection();
-		$tableName = $resource->getTableName('payme_usercode');
-		$sql = "select * from $tableName where user_code = ".(string)$params['userCommerce']." and currency ='".$this->currency_iso."'";
-
-		$codeuser = $connection->fetchAll($sql);
-
-		if ($codeuser) {
-
-			if ($codeuser[0]['userCodePayme']) {
-				  $codAsoCardHolder =  $codeuser[0]['userCodePayme'];
-			}
-			else
-			{
-				  try {
-
-					$clientWallet = new \SoapClient($this->configHelper->getConfig('wsdl'));
-					$resultWallet = $clientWallet->RegisterCardHolder($paramsWallet);
-					$codAsoCardHolder = $resultWallet->codAsoCardHolderWallet;
-
-					$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-					$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
-					$connection = $resource->getConnection();
-					$tableName = $resource->getTableName('payme_usercode');
-					$sql = "Update " . $tableName . " set userCodePayme = '".$codAsoCardHolder."' where user_code = ".(string)$params['userCommerce']." and currency = '".$this->currency_iso."'";
-
-					$connection->query($sql);
-				} catch (Exception $e) {
-
-				}
-			}
-		}
-		else
-		{
-			try {
-
-					$clientWallet = new \SoapClient($this->configHelper->getConfig('wsdl'));
-					$resultWallet = $clientWallet->RegisterCardHolder($paramsWallet);
-					$codAsoCardHolder = $resultWallet->codAsoCardHolderWallet;
-
-					$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-					$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
-					$connection = $resource->getConnection();
-					$tableName = $resource->getTableName('payme_usercode');
-					$sql = "Insert Into " . $tableName . " (user_code,currency,userCodePayme) Values (".(string)$params['userCommerce'].",'".(string)$params['currency']."','$codAsoCardHolder')";
-
-					$connection->query($sql);
-				} catch (Exception $e) {
-
-				}
-		}
-
-
-
-
-
-
-		return  $codAsoCardHolder;
-	}
-
 	/**
 	 * @return string
 	 */
@@ -367,5 +279,66 @@ final class DataGetter {
 		return md5(
 			$this->configHelper->getConfig('keywallet')
 		);
+	}
+	
+	/**
+	 * @used-by getBasicData()
+	 * @param array(string => mixed) $params
+	 * @return string
+	 * @throws \SoapFault
+	 */
+	private function userCodePayme($params) {
+		$concatRegister = $this->idEntCommerce.$params['userCommerce'].$params['billingEmail'].$this->keywallet;
+		$registerVerification = openssl_digest($concatRegister, 'sha512');
+		if (!$params['userCommerce']) {
+		   return "";
+		}
+		$paramsWallet = array(
+			'idEntCommerce' => (string)$this->idEntCommerce,
+			'codCardHolderCommerce' => (string)$params['userCommerce'],
+			'names' => $params['billingFirstName'],
+			'lastNames' => $params['billingLastName'],
+			'mail' => $params['billingEmail'] ,
+			'reserved1' => $params['reserved1'],
+			'reserved2' => $params['reserved2'],
+			'reserved3' => $params['reserved3'],
+			'registerVerification'=>$registerVerification
+		);
+		$codAsoCardHolder = "";
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+		$connection = $resource->getConnection();
+		$tableName = $resource->getTableName('payme_usercode');
+		$sql = "select * from $tableName where user_code = ".(string)$params['userCommerce']." and currency ='".$this->currency_iso."'";
+		$codeuser = $connection->fetchAll($sql);
+		if ($codeuser) {
+			if ($codeuser[0]['userCodePayme']) {
+				$codAsoCardHolder =  $codeuser[0]['userCodePayme'];
+			}
+			else try {
+				$clientWallet = new \SoapClient($this->configHelper->getConfig('wsdl'));
+				$resultWallet = $clientWallet->RegisterCardHolder($paramsWallet);
+				$codAsoCardHolder = $resultWallet->codAsoCardHolderWallet;
+				$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+				$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+				$connection = $resource->getConnection();
+				$tableName = $resource->getTableName('payme_usercode');
+				$sql = "Update " . $tableName . " set userCodePayme = '".$codAsoCardHolder."' where user_code = ".(string)$params['userCommerce']." and currency = '".$this->currency_iso."'";
+				$connection->query($sql);
+			}
+			catch (Exception $e) {}
+		}
+		else try {
+			$clientWallet = new \SoapClient($this->configHelper->getConfig('wsdl'));
+			$resultWallet = $clientWallet->RegisterCardHolder($paramsWallet);
+			$codAsoCardHolder = $resultWallet->codAsoCardHolderWallet;
+			$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+			$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+			$connection = $resource->getConnection();
+			$tableName = $resource->getTableName('payme_usercode');
+			$sql = "Insert Into " . $tableName . " (user_code,currency,userCodePayme) Values (".(string)$params['userCommerce'].",'".(string)$params['currency']."','$codAsoCardHolder')";
+			$connection->query($sql);
+		} catch (Exception $e) {}
+		return $codAsoCardHolder;
 	}
 }

@@ -5,7 +5,16 @@
 	</head>
 	 <body>
         <referenceContainer name="content">
-            <block class="Magento\Framework\View\Element\Template" name="city.block" template="Custom_City::city/city.phtml" after="checkout.root" cacheable="true" />
+<!-- 2021-05-13 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+«Broken reference: the 'city.block' tries to reorder itself towards 'checkout.root',
+but their parents are different: 'content' and '' respectively»:
+https://github.com/innomuebles/m2/issues/13  -->
+            <block
+				cacheable="true"
+				class="Magento\Framework\View\Element\Template"
+				name="city.block"
+				template="Custom_City::city/city.phtml"
+			/>
         </referenceContainer>
     </body>
 </page>

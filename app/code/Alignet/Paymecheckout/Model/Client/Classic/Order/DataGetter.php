@@ -289,55 +289,41 @@ final class DataGetter {
 	 */
 	private function userCodePayme(array $d) {
 		$r = ''; /** @var string $r */
-		$customerId = dfa($d, 'userCommerce'); /** @var int|null $customerId */
-		$concatRegister = $this->idEntCommerce . $customerId . $d['billingEmail'] . $this->keywallet;
-		$registerVerification = openssl_digest($concatRegister, 'sha512');
-		if ($customerId) {
-			$paramsWallet = [
-				'idEntCommerce' => (string)$this->idEntCommerce,
-				'codCardHolderCommerce' => (string)$customerId,
-				'names' => $d['billingFirstName'],
-				'lastNames' => $d['billingLastName'],
-				'mail' => $d['billingEmail'] ,
-				'reserved1' => $d['reserved1'],
-				'reserved2' => $d['reserved2'],
-				'reserved3' => $d['reserved3'],
-				'registerVerification'=>$registerVerification
-			];
-			$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-			$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
-			$connection = $resource->getConnection();
-			$tableName = $resource->getTableName('payme_usercode');
-			$sql = "select * from $tableName where user_code = $customerId and currency ='".$this->currency_iso."'";
-			$codeuser = $connection->fetchAll($sql);
-			if ($codeuser) {
-				if ($codeuser[0]['userCodePayme']) {
-					$r = $codeuser[0]['userCodePayme'];
+		if ($customerId = dfa($d, 'userCommerce')) { /** @var int|null $customerId */
+			$row = df_fetch_one('payme_usercode', '*', ['user_code' => $customerId, 'currency' => $this->currency_iso]);
+			if (!($r = dfa($row, 'userCodePayme'))
+				# 2021-05-13 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+				# The line below can throw the error:
+				# «Couldn't load from 'https://www.pay-me.pe/WALLETWS/services/WalletCommerce?wsdl'»
+				# https://github.com/innomuebles/m2/issues/17#issuecomment-840054608
+				&& ($s = df_try(function() {return new \SoapClient($this->configHelper->getConfig('wsdl'));}))
+			) {/** @var \SoapClient $s */
+				try {
+					$res = $s->RegisterCardHolder([
+						'idEntCommerce' => (string)$this->idEntCommerce,
+						'codCardHolderCommerce' => (string)$customerId,
+						'names' => $d['billingFirstName'],
+						'lastNames' => $d['billingLastName'],
+						'mail' => $d['billingEmail'] ,
+						'reserved1' => $d['reserved1'],
+						'reserved2' => $d['reserved2'],
+						'reserved3' => $d['reserved3'],
+						'registerVerification'=> openssl_digest(df_cc(
+							$this->idEntCommerce, $customerId, $d['billingEmail'], $this->keywallet
+						), 'sha512')
+					]); /** @var object $res */
+					$r = dfo($res, 'codAsoCardHolderWallet');
 				}
-				else try {
-					$clientWallet = new \SoapClient($this->configHelper->getConfig('wsdl'));
-					$resultWallet = $clientWallet->RegisterCardHolder($paramsWallet);
-					$r = $resultWallet->codAsoCardHolderWallet;
-					$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-					$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
-					$connection = $resource->getConnection();
-					$tableName = $resource->getTableName('payme_usercode');
-					$sql = "Update " . $tableName . " set userCodePayme = '".$r."' where user_code = $customerId and currency = '".$this->currency_iso."'";
-					$connection->query($sql);
+				catch (\Exception $e) {df_log_e($e, $this);}
+				if ($r) {
+					$t = df_table('payme_usercode'); /** @var string $t */
+					$p = ['userCodePayme' => $r]; /** @var array(string => mixed) $p */
+					$row
+						? df_conn()->update($t, $p, ['? = user_code' => $customerId, '? = currency' => $this->currency_iso])
+						: df_conn()->insert($t, $p + ['currency' => $this->currency_iso, 'user_code' => $customerId])
+					;
 				}
-				catch (Exception $e) {}
 			}
-			else try {
-				$clientWallet = new \SoapClient($this->configHelper->getConfig('wsdl'));
-				$resultWallet = $clientWallet->RegisterCardHolder($paramsWallet);
-				$r = $resultWallet->codAsoCardHolderWallet;
-				$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-				$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
-				$connection = $resource->getConnection();
-				$tableName = $resource->getTableName('payme_usercode');
-				$sql = "Insert Into " . $tableName . " (user_code,currency,userCodePayme) Values ($customerId,'".(string)$d['currency']."','$r')";
-				$connection->query($sql);
-			} catch (Exception $e) {}
 		}
 		return $r;
 	}

@@ -5,10 +5,15 @@
     </head>
 	<body>
 		<referenceContainer name="before.body.end">
-			<block class="Magento\Framework\View\Element\Template" name="sparsh_whatsappchat"
+<!-- 2021-05-13 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+«Broken reference: the 'sparsh_whatsappchat' tries to reorder itself towards 'before.body.end',
+but their parents are different: 'before.body.end' and 'page.wrapper' respectively»:
+https://github.com/innomuebles/m2/issues/14 -->
+			<block
+				class="Magento\Framework\View\Element\Template"
+				name="sparsh_whatsappchat"
                 template="Sparsh_WhatsAppChat::button.phtml"
-                before="before.body.end">
-            </block>
+			/>
 		</referenceContainer>
 	</body>
 </page>

@@ -90,7 +90,11 @@
                 <container name="product.info.extrahint" as="extrahint" label="Product View Extra Hint">
                     <container name="product.info.social" label="Product social links container" htmlTag="div" htmlClass="product-social-links">
                         <block class="Magento\Catalog\Block\Product\View" name="product.info.addto" as="addto" template="Magento_Catalog::product/view/addto.phtml">
-                            <block class="Magento\Catalog\Block\Product\View\AddTo\Compare" name="view.addto.compare" after="view.addto.wishlist"
+<!-- 2021-05-14 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
+«Broken reference: the 'view.addto.compare' tries to reorder itself towards 'view.addto.wishlist',
+but their parents are different: 'product.info.addto' and 'product.info.addtocart' respectively»:
+https://github.com/innomuebles/m2/issues/18 -->
+                            <block class="Magento\Catalog\Block\Product\View\AddTo\Compare" name="view.addto.compare"
                                    template="Magento_Catalog::product/view/addto/compare.phtml" />
                         </block>
                         <block class="Magento\Catalog\Block\Product\View" name="product.info.mailto" template="Magento_Catalog::product/view/mailto.phtml"/>

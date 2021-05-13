@@ -22,9 +22,12 @@
 # https://mage2.pro/t/5774
 !/vendor/magento/framework/View/Element/Template/File/Validator.php
 # 2021-05-14 Dmitry Fedyuk https://www.upwork.com/fl/mage2pro
-# «Broken reference: the 'view.addto.compare' tries to reorder itself towards 'view.addto.wishlist',
+# 1) «Broken reference: the 'view.addto.compare' tries to reorder itself towards 'view.addto.wishlist',
 # but their parents are different: 'product.info.addto' and 'product.info.addtocart' respectively»:
 # https://github.com/innomuebles/m2/issues/18
+# «Broken reference: the 'skip_gallery_before' tries to reorder itself towards 'product.info.media.image',
+# but their parents are different: 'skip_gallery_before.wrapper' and 'product.info.media' respectively»:
+# https://github.com/innomuebles/m2/issues/19
 !/vendor/magento/module-catalog/view/frontend/layout/catalog_product_view.xml
 /dev
 /vendor/codeception

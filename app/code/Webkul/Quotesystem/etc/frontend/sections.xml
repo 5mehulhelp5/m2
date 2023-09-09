@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Customer:etc/sections.xsd">
+    <action name="quotesystem/buyerquote/addtocart">
+        <section name="cart"/>
+    </action>
+    <action name="quotesystem/rewrite/currency/switchAction">
+        <section name="cart"/>
+    </action>
+
+    <action name="quotesystem/buyerquote/savequote">
+        <section name="q"/>
+    </action>
+    <action name="quotesystem/sidebar/removeItem">
+        <section name="q"/>
+    </action>
+    <action name="quotesystem/sidebar/updateItem">
+        <section name="q"/>
+    </action>
+    <action name="quotesystem/buyerquote/index">
+        <section name="q"/>
+    </action>
+</config>
